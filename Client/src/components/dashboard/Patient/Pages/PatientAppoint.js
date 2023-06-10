@@ -1,0 +1,144 @@
+import React, { useState } from 'react'
+import backgroundImg from '../../../../assets/background1.png'
+import Logo from '../../../../assets/logo3.png'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const PatientAppoint = () => {
+
+
+  const [formData, setFormData] = useState({
+    date: '',
+    time: '',
+    reason: '',
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/appointments', formData); // Replace '/api/appointments' with your actual API endpoint
+      // Handle the response or any additional logic here
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("ownerId");
+		navigate("/login", { replace: true });
+	};
+
+  const gotoPatientDashboard = () => {
+    navigate('/dashboard/patients')
+  }
+  const gotoPatientMedical = () => {
+    navigate('/dashboard/patientmedical')
+  }
+
+  const gotoDentalXray = () => {
+    navigate('/dashboard/dentalxray')
+  }
+
+  const gotoPatientProfile = () => {
+    navigate('/dashboard/patientprofile')
+  }
+
+  return (
+    <div className='bg-no-repeat bg-cover flex' style={{ backgroundImage: `url(${backgroundImg})`, height: '100vh' }}>
+      <div className='w-1/4 bg-cyan-950 flex flex-col '>
+        <img src={Logo} style={{ height: '300px', width: '300px' }} className='ml-12' />
+        <div className="w-full h-12 text-white flex flex-col text-center pt-2">
+          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoPatientDashboard()}>
+            <h4 className='mt-2'>Dashboard</h4>
+          </div>
+          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoPatientProfile()} >
+            <h4 className="mt-2">Profile</h4>
+          </div>
+          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoDentalXray()}>
+            <h4 className="mt-2 mr-2">Dental X-RAY</h4>
+          </div>
+          <div className="bg-gray-400 text-gray-800 border-b-2 border-gray-500 border-t-2">
+            <h4 className="mt-2">Appointment</h4>
+          </div>
+          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoPatientMedical()}>
+            <h4 className="mt-2">Medical History</h4>
+          </div>
+        </div>
+      </div>
+      <div className='w-3/4 bg-none'>
+      <div className="bg-white text-black h-12 flex">
+      <h2 className="bg-white h-12 text-black font-bold font-serif ml-4 pt-2 underline">
+        PATIENT DASHBOARD
+      </h2>
+      <h5 className="absolute right-32 mt-2 text-xl uppercase">Welcome</h5>
+      <button
+        className="absolute right-4 mt-2 bg-cyan-900 w-24 h-8 text-white rounded-full"
+        onClick={handleLogout}>
+        Log Out
+      </button>
+      <h5></h5>
+    </div>
+        <form onSubmit={handleSubmit} className="text-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ml-56 mt-24 w-1/2 flex flex-col h-1/2 justify-center text-center">
+          <h2 className="text-xl font-bold mb-4">Create an Appointment</h2>
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="date">
+              Date
+            </label>
+            <input
+              type="text"
+              name="date"
+              id="date"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter date"
+              value={formData.date}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="time">
+              Time
+            </label>
+            <input
+              type="text"
+              name="time"
+              id="time"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter time"
+              value={formData.time}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="reason">
+              Reason
+            </label>
+            <textarea
+              name="reason"
+              id="reason"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter reason"
+              value={formData.reason}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex items-center justify-center">
+            <button
+              type="submit"
+              className="bg-cyan-800 hover:bg-cyan-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Create Appointment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default PatientAppoint

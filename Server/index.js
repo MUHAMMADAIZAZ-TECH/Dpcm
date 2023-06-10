@@ -1,0 +1,44 @@
+require('dotenv').config(); // Load environment variables from .env file
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const app = express();
+const cors = require('cors');
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Database connected successfully'))
+    .catch(err => console.error('Error connecting to database', err));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Middleware to set cache-control headers
+const setNoCacheHeaders = (req, res, next) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+};
+
+app.use(setNoCacheHeaders); // Set cache-control headers for all routes
+
+// Routes
+const authRoutes = require('./src/routes/owner');
+const adminRoutes = require('./src/routes/admin');
+const doctorRoutes = require('./src/routes/doctor');
+const patientRoutes = require('./src/routes/patient');
+const pricingRoutes = require('./src/routes/pricing');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/admin',  adminRoutes);
+app.use('/api/doctor', doctorRoutes);
+app.use('/api/patient', patientRoutes);
+app.use('/api/pricing',pricingRoutes);
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
