@@ -7,7 +7,7 @@ const expenseSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["patient", "clinic"],
+    enum: ["patient", "clinic", "other"],
     required: true,
   },
   // Additional expense-related fields can be added here
