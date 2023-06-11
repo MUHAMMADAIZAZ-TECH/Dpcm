@@ -13,6 +13,7 @@ router.delete("/removeadmin/:id", adminController.removeAdmin);
 router.put("/updateadmin/:id", adminController.updateAdmin);
 
 router.get("/get", adminController.getAdmins);
+router.get("/clinicList", adminController.getClinicList);
 
 //update adminpassword
 router.put("/updateadminpassword/:id", adminController.updateAdminPassword);

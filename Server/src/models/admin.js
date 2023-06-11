@@ -1,55 +1,57 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const AdminSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+  },
+  clinicName: {
+    type: String,
+    required: true,
   },
   age: {
     type: Number,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   contact: {
     type: String,
-    required: true
+    required: true,
   },
   address: {
     type: String,
-    required: true
+    required: true,
   },
   gender: {
     type: String,
-    required: true
+    required: true,
   },
   qualification: {
     type: String,
-    required: true
+    required: true,
   },
   salary: {
     type: Number,
-    required: true
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-
-
-module.exports = mongoose.model('Admin', AdminSchema);
+module.exports = mongoose.model("Admin", AdminSchema);

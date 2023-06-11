@@ -7,6 +7,7 @@ exports.addAdmin = async (req, res) => {
   try {
     const {
       name,
+      clinicName,
       age,
       email,
       password,
@@ -29,6 +30,7 @@ exports.addAdmin = async (req, res) => {
     // Create a new admin object with all the information
     const newAdmin = new Admin({
       name,
+      clinicName,
       age,
       email,
       password: hashedPassword,
@@ -57,6 +59,14 @@ exports.getAdmins = async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 };
+exports.getClinicList = async (req, res) => {
+  try {
+    const admins = await Admin.find().select("clinicName");
+    res.status(200).json({ clinics: admins });
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
 
 // Update an existing admin
 exports.updateAdmin = async (req, res) => {
@@ -69,6 +79,7 @@ exports.updateAdmin = async (req, res) => {
     address,
     gender,
     qualification,
+    clinicName,
     salary,
   } = req.body;
   const adminId = req.params.id;
@@ -87,6 +98,7 @@ exports.updateAdmin = async (req, res) => {
 
   // Update the admin object
   admin.name = name || admin.name;
+  admin.clinicName = clinicName || admin.clinicName;
   admin.age = age || admin.age;
   admin.email = email || admin.email;
   admin.password = password || admin.password;
