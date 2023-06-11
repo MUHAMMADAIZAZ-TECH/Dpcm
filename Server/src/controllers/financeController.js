@@ -3,10 +3,11 @@ const FinanceEntry = require("../models/adminFinance");
 // Controller for adding a finance entry
 exports.addFinanceEntry = async (req, res) => {
   try {
+    console.log(req.body);
     const { adminId, expenseAmount, profitAmount, description } = req.body;
 
     // Create a new finance entry
-    const financeEntry = new FinanceEntry({
+    const financeEntry = await FinanceEntry.create({
       admin: adminId,
       expense: expenseAmount,
       profit: profitAmount,
@@ -14,7 +15,7 @@ exports.addFinanceEntry = async (req, res) => {
     });
 
     // Save the finance entry to the database
-    await financeEntry.save();
+    // await financeEntry.save();
 
     res.status(201).json({ success: true, financeEntry });
   } catch (error) {
