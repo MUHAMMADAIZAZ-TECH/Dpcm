@@ -1,5 +1,18 @@
 const mongoose = require("mongoose");
 
+const expenseSchema = new mongoose.Schema({
+  amount: {
+    type: Number,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ["patient", "clinic"],
+    required: true,
+  },
+  // Additional expense-related fields can be added here
+});
+
 const entrySchema = new mongoose.Schema(
   {
     admin: {
@@ -7,10 +20,7 @@ const entrySchema = new mongoose.Schema(
       ref: "Admin",
       required: true,
     },
-    expense: {
-      type: Number,
-      required: true,
-    },
+    expense: expenseSchema,
     profit: {
       type: Number,
       required: true,

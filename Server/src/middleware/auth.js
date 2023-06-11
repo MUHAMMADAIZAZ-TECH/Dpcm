@@ -42,7 +42,11 @@ const protect = async (req, res, next) => {
     res.locals.user = currentUser;
     next();
   } catch (error) {
-    console.log(error);
+    return next(
+      res.status(401).json({
+        message: error,
+      })
+    );
   }
 };
 
