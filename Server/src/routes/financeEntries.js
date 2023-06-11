@@ -10,7 +10,7 @@ const protect = require("../middleware/auth");
 // Add a new patient
 router.post("/addEntry", protect, addFinanceEntry);
 
-router.get("/", protect, getAllFinanceEntries);
+router.get("/", getAllFinanceEntries);
 
 // Update a patient's information
 // router.put("/update/:id", updatePatient);
