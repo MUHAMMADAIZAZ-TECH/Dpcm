@@ -1,24 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { addPatient, updatePatient, deletePatient, updatePatientPassword, patientLogin, getPatients } = require('../controllers/patient');
-
-
+const {
+  patientSignUp,
+  updatePatient,
+  deletePatient,
+  updatePatientPassword,
+  patientLogin,
+  getPatients,
+} = require("../controllers/patient");
 
 // Add a new patient
-router.post('/add', addPatient);
+router.post("/add", patientSignUp);
 
-router.get('/', getPatients);
+router.get("/", getPatients);
 
 // Update a patient's information
-router.put('/update/:id', updatePatient);
+router.put("/update/:id", updatePatient);
 
 // Delete a patient
-router.delete('/:id', deletePatient);
+router.delete("/:id", deletePatient);
 
 // Update a patient's password
-router.put('/updatepassword/:id', updatePatientPassword);
+router.put("/updatepassword/:id", updatePatientPassword);
 
 // Patient login (No authentication middleware applied)
-router.post('/login', patientLogin);
+router.post("/login", patientLogin);
 
 module.exports = router;
