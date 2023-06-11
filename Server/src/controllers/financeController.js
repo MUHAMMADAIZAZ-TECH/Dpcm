@@ -32,7 +32,13 @@ exports.getAllFinanceEntries = async (req, res) => {
     // Retrieve all finance entries from the database
     const financeEntries = await FinanceEntry.find().populate("admin");
 
-    res.status(200).json({ success: true, data: financeEntries });
+    res
+      .status(200)
+      .json({
+        success: true,
+        results: financeEntries.length,
+        data: financeEntries,
+      });
   } catch (error) {
     res.status(500).json({
       success: false,

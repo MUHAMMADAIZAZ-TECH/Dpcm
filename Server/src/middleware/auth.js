@@ -1,29 +1,49 @@
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
+const Admin = require("../models/admin");
+
 // const dotenv = require('dotenv');
 
 // dotenv.config();
 
-const authMiddleware = (req, res, next) => {
-  // Get the token from the request headers
-  const token = req.header("Authorization");
-
-  // Check if token exists
-  if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
-  }
-
+const protect = async (req, res, next) => {
+  // 1) Getting token and check of it's there
   try {
-    // Verify and decode the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    }
 
-    // Attach the decoded data to the request object
-    req.admin = decoded.admin;
+    if (!token) {
+      return next(
+        res.status(401).json({
+          message: "You are not logged in! Please log in to get access.",
+        })
+      );
+    }
 
-    // Call the next middleware
+    // 2) Verification token
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+    // 3) Check if user still exists
+    const currentUser = await Admin.findById(decoded.id);
+    if (!currentUser)
+      return next(
+        res.status(401).json({
+          message: "The user belonging to this token does no longer exist.",
+        })
+      );
+
+    // GRANT ACCESS TO PROTECTED ROUTE
+    req.user = currentUser;
+    res.locals.user = currentUser;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    console.log(error);
   }
 };
 
-module.exports = authMiddleware;
+module.exports = protect;

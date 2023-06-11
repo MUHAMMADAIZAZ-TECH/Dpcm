@@ -4,11 +4,13 @@ const {
   addFinanceEntry,
   getAllFinanceEntries,
 } = require("../controllers/financeController");
+const authMiddleware = require("../middleware/auth");
+const protect = require("../middleware/auth");
 
 // Add a new patient
-router.post("/addEntry", addFinanceEntry);
+router.post("/addEntry", protect, addFinanceEntry);
 
-router.get("/", getAllFinanceEntries);
+router.get("/", protect, getAllFinanceEntries);
 
 // Update a patient's information
 // router.put("/update/:id", updatePatient);
