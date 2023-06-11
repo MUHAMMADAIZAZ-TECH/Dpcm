@@ -45,6 +45,7 @@ const AdminLogin = () => {
 			const token = response.data.token;
 			// Store the token or perform any other actions required for successful login
 			navigate("/dashboard/admin");
+			localStorage.setItem('user',JSON.stringify(response.data))
 			localStorage.setItem("token", token);
 		} catch (error) {
 			// Handle login error
