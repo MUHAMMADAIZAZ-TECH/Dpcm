@@ -20,10 +20,9 @@ const Register = () => {
         setErrorMessage("Passwords Unmatched");
         return;
       }
-
+      console.log(firstName + ' ' +lastName)
       const response = await axios.post("http://localhost:3000/api/patient/signup", {
-        firstName,
-        lastName,
+        name:firstName + ' ' +lastName,
         email,
         password,
       });

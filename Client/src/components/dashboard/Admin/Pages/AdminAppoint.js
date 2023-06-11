@@ -3,30 +3,43 @@ import backgroundImg from '../../../../assets/background1.png';
 import Logo from '../../../../assets/logo3.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import moment from 'moment';
 
 const AdminAppoint = () => {
 
   const [appointments, setAppointments] = useState([]);
-
+  console.log(appointments)
   useEffect(() => {
     // Fetch appointments from the backend
-    axios.get('/api/appointments')
+    fetchAppointments()
+  }, []);
+  const fetchAppointments = ( )=>{
+    axios.get('http://localhost:3000/api/appointment', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(response => {
         const fetchedAppointments = response.data;
-        setAppointments(fetchedAppointments);
+        console.log(fetchedAppointments.data)
+        setAppointments(fetchedAppointments.data);
       })
       .catch(error => {
         console.error('Error fetching appointments:', error);
       });
-  }, []);
-
+  }
   const handleApproveAppointment = (appointmentId) => {
+    console.log(appointmentId)
     // Send an API request to approve the appointment
-    axios.patch(`/api/appointments/${appointmentId}/approve`)
+    axios.patch(`http://localhost:3000/api/appointment/${appointmentId}`,{
+      "isApproved": true
+      },{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
       .then(response => {
-        // Handle success response
         console.log('Appointment approved successfully:', response.data);
-        // Refresh the list of appointments
         fetchAppointments();
       })
       .catch(error => {
@@ -36,7 +49,13 @@ const AdminAppoint = () => {
 
   const handleDeclineAppointment = (appointmentId) => {
     // Send an API request to decline the appointment
-    axios.patch(`/api/appointments/${appointmentId}/decline`)
+    axios.patch(`http://localhost:3000/api/appointment/${appointmentId}`,{
+      "isApproved": false
+      },{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
       .then(response => {
         // Handle success response
         console.log('Appointment declined successfully:', response.data);
@@ -48,22 +67,7 @@ const AdminAppoint = () => {
       });
   };
 
-  const fetchAppointments = () => {
-    // Fetch appointments from the backend
-    axios.get('/api/appointments')
-      .then(response => {
-        const fetchedAppointments = response.data;
-        setAppointments(fetchedAppointments);
-      })
-      .catch(error => {
-        console.error('Error fetching appointments:', error);
-      });
-  };
-
-
-
   const navigate = useNavigate();
-
   
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -94,7 +98,7 @@ const AdminAppoint = () => {
   return (
     <div
       className='bg-no-repeat bg-cover flex'
-      style={{ backgroundImage: `url(${backgroundImg})`, height: '100vh' }}
+      style={{ backgroundImage: `url(${backgroundImg})`, height: '100vh' ,}}
     >
       <div className='w-1/4 bg-cyan-950 flex flex-col'>
         <img src={Logo} style={{ height: '300px', width: '300px' }} className='ml-12' />
@@ -131,7 +135,7 @@ const AdminAppoint = () => {
           </div>
         </div>
       </div>
-      <div className='w-3/4 bg-none'>
+      <div className='w-3/4 bg-none' style={{overflowY:'scroll'}}>
         <div className='bg-white text-black h-12 flex'>
         <h2 className="bg-white h-12 text-black font-bold font-serif ml-4 pt-2 underline">
         ADMIN DASHBOARD
@@ -146,27 +150,28 @@ const AdminAppoint = () => {
   </button>
           <h5></h5>
         </div>
-        <div className="p-4 text-white">
+        <div className="p-4 text-white" >
           <h2 className="text-2xl font-bold mb-4">Appointment Approval</h2>
-
+          
           {appointments.map(appointment => (
-            <div key={appointment.id} className="bg-white rounded-md shadow-md p-4 mb-4">
+            <div key={appointment.id} className="bg-white rounded-md shadow-md p-4 mb-4" >
               <h3 className="text-lg font-semibold mb-2">{appointment.patientName}</h3>
-              <p className="text-gray-700">Date: {appointment.date}</p>
+              <p className="text-gray-700">Date: {moment(appointment.date).format('YYYY-MM-DD HH:mm:ss')}</p>
               <p className="text-gray-700">Time: {appointment.time}</p>
+              <p className="text-gray-700">Status: {appointment.isApproved?"Approved":"Pending"}</p>
               <p className="text-gray-700">Reason: {appointment.reason}</p>
 
               <div className="flex">
                 <button
                   className="px-4 py-2 bg-green-500 text-white rounded-md mt-2 mr-2"
-                  onClick={() => handleApproveAppointment(appointment.id)}
+                  onClick={() => handleApproveAppointment(appointment._id)}
                 >
                   Approve
                 </button>
 
                 <button
                   className="px-4 py-2 bg-red-500 text-white rounded-md mt-2"
-                  onClick={() => handleDeclineAppointment(appointment.id)}
+                  onClick={() => handleDeclineAppointment(appointment._id)}
                 >
                   Decline
                 </button>
