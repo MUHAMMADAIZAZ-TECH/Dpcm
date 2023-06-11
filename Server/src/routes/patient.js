@@ -10,7 +10,9 @@ const {
 } = require("../controllers/patient");
 
 // Add a new patient
-router.post("/add", patientSignUp);
+
+console.log("hitttting");
+router.post("/signUp", patientSignUp);
 
 router.get("/", getPatients);
 

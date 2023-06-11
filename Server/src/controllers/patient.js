@@ -5,6 +5,8 @@ exports.patientSignUp = async (req, res) => {
   try {
     const { name, email, password, contact, address, age, gender, city } =
       req.body;
+
+    console.log("+++++++++++++++");
     const patientExists = await Patient.findOne({ email });
 
     if (patientExists) {
@@ -12,6 +14,7 @@ exports.patientSignUp = async (req, res) => {
         .status(400)
         .json({ error: "Patient with this email already exists" });
     }
+    console.log("+++++++++++++++");
 
     const patient = await Patient.create({
       name,
@@ -21,7 +24,11 @@ exports.patientSignUp = async (req, res) => {
       address,
       age,
       gender,
+      city,
     });
+
+    console.log("+++++++++++++++");
+
     createSendToken(patient, 200, req, res);
 
     // res.status(201).json(patient);
