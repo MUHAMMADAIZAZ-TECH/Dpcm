@@ -38,7 +38,7 @@ function Routs() {
   React.useEffect(() => {
     // Example logic to check authentication status and role
     const user = getCurrentUser(); // Replace with your authentication logic
-    if (user) {
+    if (user.login) {
       setIsAuthenticated(true);
       setUserRole(user.role);
     } else {
@@ -55,11 +55,16 @@ function Routs() {
     // Replace with your authentication check
     if (localStorage.getItem('token') !== null) {
       return {
-        role: 'owner' // Replace with the user's role
+        role: 'owner' ,
+        login: true// Replace with the user's role
         // Add any other user information you need
       };
     } else {
-      return null;
+      return {
+        role: null ,
+        login: false// Replace with the user's role
+        // Add any other user information you need
+      };
     }
   }
 
