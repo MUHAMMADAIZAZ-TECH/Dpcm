@@ -7,7 +7,9 @@ const {
   updatePatientPassword,
   patientLogin,
   getPatients,
+  getMe,
 } = require("../controllers/patient");
+const { patientProtect } = require("../middleware/auth");
 
 // Add a new patient
 
@@ -15,9 +17,10 @@ console.log("hitttting");
 router.post("/signUp", patientSignUp);
 
 router.get("/", getPatients);
+router.get("/me", patientProtect, getMe);
 
 // Update a patient's information
-router.put("/update/:id", updatePatient);
+router.patch("/update", patientProtect, updatePatient);
 
 // Delete a patient
 router.delete("/:id", deletePatient);

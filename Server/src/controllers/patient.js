@@ -45,25 +45,33 @@ exports.getPatients = async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 };
+exports.getMe = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const patient = await Patient.findById(id);
+    if (!patient) res.status(400).json({ error: "invalid id" });
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
 
 exports.updatePatient = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, email, password, contact, address, age, gender, city } =
-      req.body;
+    const id = req.user.id;
+    const updates = req.body;
 
-    // Check if email already exists in the database
-    const existingPatient = await Patient.findOne({ email });
-    if (existingPatient && existingPatient._id.toString() !== id) {
-      return res.status(400).json({ error: "This email is already taken" });
-    }
-
+    // Find the patient by ID and update the fields
     const patient = await Patient.findByIdAndUpdate(
       id,
-      { name, email, password, contact, address, age, gender, city },
+      { $set: updates },
       { new: true }
     );
-    if (!patient) return res.status(404).json({ error: "Patient not found" });
+
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
+
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ error: "Server Error" });
