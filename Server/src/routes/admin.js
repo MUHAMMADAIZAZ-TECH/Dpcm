@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/admin");
-const authMiddleware = require("../middleware/auth");
+const { protect } = require("./../middleware/auth");
 
 // Add admin
 router.post("/addadmin", adminController.addAdmin);
@@ -22,7 +22,7 @@ router.put("/updateadminpassword/:id", adminController.updateAdminPassword);
 router.post("/loginadmin", adminController.adminLogin);
 
 // Protected route that requires authentication
-router.get("/dashboard", authMiddleware, (req, res) => {
+router.get("/dashboard", protect, (req, res) => {
   // Access the decoded admin data from req.admin
   const admin = req.admin;
   res.json({ message: "Admin Dashboard", admin });

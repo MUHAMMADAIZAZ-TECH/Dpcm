@@ -5,7 +5,7 @@ const {
   getAllFinanceEntries,
 } = require("../controllers/financeController");
 const authMiddleware = require("../middleware/auth");
-const protect = require("../middleware/auth");
+const { protect } = require("../middleware/auth");
 
 // Add a new patient
 router.post("/addEntry", protect, addFinanceEntry);

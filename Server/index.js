@@ -40,6 +40,7 @@ const doctorRoutes = require("./src/routes/doctor");
 const patientRoutes = require("./src/routes/patient");
 const pricingRoutes = require("./src/routes/pricing");
 const financeRoutes = require("./src/routes/financeEntries");
+const appointmentRoutes = require("./src/routes/appointment");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
@@ -47,5 +48,6 @@ app.use("/api/doctor", doctorRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/finance", financeRoutes);
+app.use("/api/appointment", appointmentRoutes);
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
