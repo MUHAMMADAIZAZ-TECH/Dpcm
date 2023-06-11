@@ -61,10 +61,18 @@ exports.updatePatient = async (req, res) => {
     const id = req.user.id;
     const updates = req.body;
 
+    console.log(updates);
+
     // Find the patient by ID and update the fields
     const patient = await Patient.findByIdAndUpdate(
       id,
-      { $set: updates },
+      {
+        $set: {
+          name: updates.name,
+          email: updates.email,
+          address: updates.address,
+        },
+      },
       { new: true }
     );
 
