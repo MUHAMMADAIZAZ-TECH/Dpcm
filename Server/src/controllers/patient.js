@@ -20,11 +20,11 @@ exports.patientSignUp = async (req, res) => {
       name,
       email,
       password,
-      contact,
-      address,
-      age,
-      gender,
-      city,
+      // contact,
+      // address,
+      // age,
+      // gender,
+      // city,
     });
 
     console.log("+++++++++++++++");
