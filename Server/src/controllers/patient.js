@@ -1,10 +1,10 @@
 const Patient = require("../models/patient");
 const jwt = require("jsonwebtoken");
+const shortid = require("shortid");
 
 exports.patientSignUp = async (req, res) => {
   try {
-    const { name, email, password, contact, address, age, gender, city } =
-      req.body;
+    const { name, email, password } = req.body;
 
     console.log("+++++++++++++++");
     const patientExists = await Patient.findOne({ email });
@@ -15,16 +15,12 @@ exports.patientSignUp = async (req, res) => {
         .json({ error: "Patient with this email already exists" });
     }
     console.log("+++++++++++++++");
-
+    const patientId = shortid.generate();
     const patient = await Patient.create({
+      patientId,
       name,
       email,
       password,
-      // contact,
-      // address,
-      // age,
-      // gender,
-      // city,
     });
 
     console.log("+++++++++++++++");
