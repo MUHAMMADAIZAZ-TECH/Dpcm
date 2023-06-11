@@ -7,7 +7,11 @@ import axios from "axios";
 const PatientProfile = () => {
 	const [profileData, setProfileData] = useState(null);
 	const [isEditing, setIsEditing] = useState(false);
-	const [editedProfileData, setEditedProfileData] = useState(null);
+	const [editedProfileData, setEditedProfileData] = useState({
+		name:"",
+		email:"",
+		address:""
+	});
 
 	useEffect(() => {
 		fetchProfileData();
@@ -15,7 +19,12 @@ const PatientProfile = () => {
 
 	const fetchProfileData = async () => {
 		try {
-			const response = await axios.get("/api/profile"); // Replace '/api/profile' with your actual API endpoint
+			const response = await axios.get("http://localhost:3000/api/patient/me",{
+				headers: {
+				  Authorization: `Bearer ${localStorage.getItem('token')}`
+				}
+			  }); // Replace '/api/profile' with your actual API endpoint
+			console.log(response)
 			setProfileData(response.data);
 			setEditedProfileData(response.data);
 		} catch (error) {
@@ -33,9 +42,15 @@ const PatientProfile = () => {
 	};
 
 	const handleSaveProfile = async () => {
+		console.log(editedProfileData)
 		try {
-			const response = await axios.put("/api/profile", editedProfileData); // Replace '/api/profile' with your actual API endpoint
+			const response = await axios.patch("http://localhost:3000/api/patient/update", editedProfileData,{
+				headers: {
+				  Authorization: `Bearer ${localStorage.getItem('token')}`
+				}
+			  }); // Replace '/api/profile' with your actual API endpoint
 			setProfileData(response.data);
+			fetchProfileData()
 			setIsEditing(false);
 		} catch (error) {
 			// Handle error
@@ -43,12 +58,12 @@ const PatientProfile = () => {
 	};
 
 	const handleInputChange = (e) => {
+		console.log(e.target.value,e.target.name)
 		setEditedProfileData({
 			...editedProfileData,
 			[e.target.name]: e.target.value,
 		});
 	};
-
 	const navigate = useNavigate();
   const handleLogout = () => {
 		localStorage.removeItem("token");
