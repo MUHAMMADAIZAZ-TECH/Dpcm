@@ -18,7 +18,7 @@ exports.addFinanceEntry = async (req, res) => {
     // Save the finance entry to the database
     // await financeEntry.save();
 
-    res.status(201).json({ success: true, data });
+    res.status(201).json({ success: true, data: financeEntry });
   } catch (error) {
     res.status(500).json({
       success: false,
