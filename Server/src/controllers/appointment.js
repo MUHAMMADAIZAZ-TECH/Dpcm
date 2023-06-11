@@ -34,13 +34,11 @@ exports.getAppointmentsForAdmin = async (req, res) => {
     // Find all appointments for the admin
     const appointments = await Appointment.find({ admin: adminId });
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        results: appointments.length,
-        data: appointments,
-      });
+    res.status(200).json({
+      success: true,
+      results: appointments.length,
+      data: appointments,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -53,7 +51,8 @@ exports.getAppointmentsForAdmin = async (req, res) => {
 exports.updateAppointment = async (req, res) => {
   try {
     const { appointmentId } = req.params;
-
+    const { isApproved } = req.body;
+    console.log(appointmentId);
     // Find the appointment by ID
     const appointment = await Appointment.findById(appointmentId);
 
@@ -64,14 +63,12 @@ exports.updateAppointment = async (req, res) => {
     }
 
     // Update the appointment's approval status
-    appointment.isApproved = true;
+    appointment.isApproved = isApproved;
 
     // Save the updated appointment
     await appointment.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Appointment approved successfully" });
+    res.status(200).json({ success: true, appointment });
   } catch (error) {
     res.status(500).json({
       success: false,

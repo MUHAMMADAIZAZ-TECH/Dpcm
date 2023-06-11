@@ -12,7 +12,7 @@ router.get("/", protect, appointmentController.getAppointmentsForAdmin);
 
 // Update admin
 router.patch(
-  "/appointmentId",
+  "/:appointmentId",
   protect,
   appointmentController.updateAppointment
 );
