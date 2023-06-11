@@ -11,6 +11,7 @@ const OwnerAdmin = ({ admins }) => {
 	const [adminEmail, setAdminEmail] = useState("");
 	const [adminPassword, setAdminPassword] = useState("");
 	const [adminContact, setAdminContact] = useState("");
+	const [clinicName, setClinicName] = useState("");
 	const [adminAddress, setAdminAddress] = useState("");
 	const [adminGender, setAdminGender] = useState("");
 	const [adminQualification, setAdminQualification] = useState("");
@@ -41,6 +42,7 @@ const OwnerAdmin = ({ admins }) => {
 					name: adminName,
 					age: adminAge,
 					email: adminEmail,
+					clinicName:clinicName,
 					password: adminPassword,
 					contact: adminContact,
 					address: adminAddress,
@@ -49,12 +51,13 @@ const OwnerAdmin = ({ admins }) => {
 					salary: adminSalary,
 				},
 			);
-			console.log(response.data);
+			console.log(response);
 			setMessage("Admin added successfully");
 			// Reset the form fields
 			setAdminName("");
 			setAdminAge("");
 			setAdminEmail("");
+			setClinicName("")
 			setAdminPassword("");
 			setAdminContact("");
 			setAdminAddress("");
@@ -73,6 +76,7 @@ const OwnerAdmin = ({ admins }) => {
 		setAdminEmail("");
 		setAdminPassword("");
 		setAdminContact("");
+		setClinicName("")
 		setAdminAddress("");
 		setAdminGender("");
 		setAdminQualification("");
@@ -98,6 +102,7 @@ const OwnerAdmin = ({ admins }) => {
 		setAdminName("");
 		setAdminEmail("");
 		setAdminPassword("");
+		setClinicName("")
 		setAdminContact("");
 		setAdminAddress("");
 		setAdminGender("");
@@ -119,7 +124,7 @@ const OwnerAdmin = ({ admins }) => {
 	};
 
 
-		fetchAdmin();
+		
 	
 	console.log(admin);
 
@@ -193,7 +198,9 @@ const OwnerAdmin = ({ admins }) => {
 			setContactError("");
 		}
 	}
-
+	useEffect(()=>{
+		fetchAdmin();
+	},[])
 	return (
 		<div
 			className="bg-no-repeat bg-cover flex"
@@ -254,13 +261,35 @@ const OwnerAdmin = ({ admins }) => {
 										? "bg-cyan-800"
 										: "bg-cyan-800 hover:bg-cyan-900"
 								}`}
-								onClick={() => handleActionChange("list")}>
+								onClick={() => {
+									fetchAdmin();
+									handleActionChange("list")
+								}}>
 								Admin Lists
 							</button>
 						</div>
 					</div>
 					{selectedAction == "add" && (
 						<form onSubmit={handleSubmit} className="space-y-4">
+							<div className="w-full flex space-x-10 justify-center">
+								<div >
+									<label
+										htmlFor="clinicName"
+										className="block font-medium text-white">
+										Clinic Name
+									</label>
+									<input
+										type="text"
+										id="adminName"
+										style={{width:450}}
+										value={clinicName}
+										onChange={(e) => setClinicName(e.target.value)}
+										className="border border-gray-300 p-2 rounded "
+										required
+										autoComplete="off"
+									/>
+								</div>
+							</div>
 							<div className="w-full flex space-x-10 justify-center">
 								<div>
 									<label
@@ -451,6 +480,9 @@ const OwnerAdmin = ({ admins }) => {
 											</div>
 											<div className="text-white w-1/3">
 												<p className="text-2xl">{admin.email}</p>
+											</div>
+											<div className="text-white w-1/3">
+												<p className="text-2xl">{admin.clinicName}</p>
 											</div>
 											<div className="text-white flex items-center justify-center">
 												<button

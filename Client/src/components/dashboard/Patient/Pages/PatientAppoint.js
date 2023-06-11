@@ -1,22 +1,27 @@
-import React, { useState } from 'react'
-import backgroundImg from '../../../../assets/background1.png'
-import Logo from '../../../../assets/logo3.png'
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import backgroundImg from "../../../../assets/background1.png";
+import Logo from "../../../../assets/logo3.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const PatientAppoint = () => {
-
-
   const [formData, setFormData] = useState({
-    date: '',
-    time: '',
-    reason: '',
+    date: "",
+    time: "",
+    reason: "",
+    adminId:""
   });
-
+  console.log(formData)
+  const [clinicList, setclinicList] = useState([]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/appointments', formData); // Replace '/api/appointments' with your actual API endpoint
+      const response = await axios.post("http://localhost:3000/api/appointment",formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }); // Replace '/api/appointments' with your actual API endpoint
+      console.log(response)
       // Handle the response or any additional logic here
     } catch (error) {
       // Handle error
@@ -29,71 +34,110 @@ const PatientAppoint = () => {
 
   const navigate = useNavigate();
   const handleLogout = () => {
-		localStorage.removeItem("token");
-		localStorage.removeItem("ownerId");
-		navigate("/login", { replace: true });
-	};
+    localStorage.removeItem("token");
+    localStorage.removeItem("ownerId");
+    navigate("/login", { replace: true });
+  };
 
   const gotoPatientDashboard = () => {
-    navigate('/dashboard/patients')
-  }
+    navigate("/dashboard/patients");
+  };
   const gotoPatientMedical = () => {
-    navigate('/dashboard/patientmedical')
-  }
+    navigate("/dashboard/patientmedical");
+  };
 
   const gotoDentalXray = () => {
-    navigate('/dashboard/dentalxray')
-  }
+    navigate("/dashboard/dentalxray");
+  };
 
   const gotoPatientProfile = () => {
-    navigate('/dashboard/patientprofile')
-  }
-
+    navigate("/dashboard/patientprofile");
+  };
+  const getClinics = async () => {
+    try {
+      const repsonse = await axios.get(
+        "http://localhost:3000/api/admin/clinicList"
+      );
+      setclinicList(repsonse.data);
+      console.log(repsonse);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getClinics();
+  }, []);
   return (
-    <div className='bg-no-repeat bg-cover flex' style={{ backgroundImage: `url(${backgroundImg})`, height: '100vh' }}>
-      <div className='w-1/4 bg-cyan-950 flex flex-col '>
-        <img src={Logo} style={{ height: '300px', width: '300px' }} className='ml-12' />
+    <div
+      className="bg-no-repeat bg-cover flex"
+      style={{ backgroundImage: `url(${backgroundImg})`, height: "100vh" }}
+    >
+      <div className="w-1/4 bg-cyan-950 flex flex-col ">
+        <img
+          src={Logo}
+          style={{ height: "300px", width: "300px" }}
+          className="ml-12"
+        />
         <div className="w-full h-12 text-white flex flex-col text-center pt-2">
-          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoPatientDashboard()}>
-            <h4 className='mt-2'>Dashboard</h4>
+          <div
+            className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
+            onClick={() => gotoPatientDashboard()}
+          >
+            <h4 className="mt-2">Dashboard</h4>
           </div>
-          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoPatientProfile()} >
+          <div
+            className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
+            onClick={() => gotoPatientProfile()}
+          >
             <h4 className="mt-2">Profile</h4>
           </div>
-          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoDentalXray()}>
+          <div
+            className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
+            onClick={() => gotoDentalXray()}
+          >
             <h4 className="mt-2 mr-2">Dental X-RAY</h4>
           </div>
           <div className="bg-gray-400 text-gray-800 border-b-2 border-gray-500 border-t-2">
             <h4 className="mt-2">Appointment</h4>
           </div>
-          <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoPatientMedical()}>
+          <div
+            className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
+            onClick={() => gotoPatientMedical()}
+          >
             <h4 className="mt-2">Medical History</h4>
           </div>
         </div>
       </div>
-      <div className='w-3/4 bg-none'>
-      <div className="bg-white text-black h-12 flex">
-      <h2 className="bg-white h-12 text-black font-bold font-serif ml-4 pt-2 underline">
-        PATIENT DASHBOARD
-      </h2>
-      <h5 className="absolute right-32 mt-2 text-xl uppercase">Welcome</h5>
-      <button
-        className="absolute right-4 mt-2 bg-cyan-900 w-24 h-8 text-white rounded-full"
-        onClick={handleLogout}>
-        Log Out
-      </button>
-      <h5></h5>
-    </div>
-        <form onSubmit={handleSubmit} className="text-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ml-56 mt-24 w-1/2 flex flex-col h-1/2 justify-center text-center">
+      <div className="w-3/4 bg-none">
+        <div className="bg-white text-black h-12 flex">
+          <h2 className="bg-white h-12 text-black font-bold font-serif ml-4 pt-2 underline">
+            PATIENT DASHBOARD
+          </h2>
+          <h5 className="absolute right-32 mt-2 text-xl uppercase">Welcome</h5>
+          <button
+            className="absolute right-4 mt-2 bg-cyan-900 w-24 h-8 text-white rounded-full"
+            onClick={handleLogout}
+          >
+            Log Out
+          </button>
+          <h5></h5>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="text-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ml-56 mt-24 w-1/2 flex flex-col h-1/2 justify-center text-center"
+        >
           <h2 className="text-xl font-bold mb-4">Create an Appointment</h2>
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="date">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="date"
+            >
               Date
             </label>
             <input
-              type="text"
               name="date"
-              id="date"
+              type="date"
+              id="datepicker"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter date"
               value={formData.date}
@@ -101,7 +145,29 @@ const PatientAppoint = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="time">
+            <label
+              htmlFor="ClinicName"
+              className="block text-white text-sm font-bold mb-2"
+            >
+              Clinic Name
+            </label>
+            <select
+              id="ClinicName"
+              name="adminId"
+              value={formData.ClinicName}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+              onChange={handleChange}
+            >
+              <option value="">Select Clinic</option>
+              {clinicList.clinics && clinicList.clinics.map((Clinic)=><option value={Clinic._id}>{Clinic.clinicName}</option>)}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="time"
+            >
               Time
             </label>
             <input
@@ -115,7 +181,10 @@ const PatientAppoint = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="reason">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="reason"
+            >
               Reason
             </label>
             <textarea
@@ -138,7 +207,7 @@ const PatientAppoint = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PatientAppoint
+export default PatientAppoint;
