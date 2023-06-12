@@ -30,8 +30,8 @@ import PatientAppoint from "../components/dashboard/Patient/Pages/PatientAppoint
 import AuthRoute from "./AuthRoute";
 
 function Routs() {
-	const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [userRole, setUserRole] = React.useState('');
+	const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+  const [userRole, setUserRole] = React.useState('owner');
 
   // Check if user is authenticated and set the role
   // This can be done upon successful login or by checking the authentication status from an API
