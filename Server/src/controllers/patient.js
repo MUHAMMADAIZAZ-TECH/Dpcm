@@ -1,4 +1,5 @@
 const Patient = require("../models/patient");
+const MedicalRecords =  require("../models/medicalrecord");
 const jwt = require("jsonwebtoken");
 const shortid = require("shortid");
 
@@ -32,7 +33,49 @@ exports.patientSignUp = async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 };
-
+exports.addmedicalrecord = async (req, res) => {
+  try {
+    const { patientid,fullname,
+    dob,
+    contact,
+    medication,
+    dentalhistory} = req.body;
+    console.log(req.body)
+    const patient = await MedicalRecords.create({
+      patientid,
+      fullname,
+      dob,
+      contact,
+      medication,
+      dentalhistory
+    });
+    res.status(201).json({record:patient})
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+exports.getMedicalRecords = async (req, res) => {
+  try {
+    const patient = await MedicalRecords.find();
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+exports.getsinglemedicalrecord = async (req, res) => {
+  try {
+    const { patientid } = req.params; // Assuming patientId is passed as a parameter in the request URL
+    const patient = await MedicalRecords.findOne({ patientid });
+    
+    if (!patient) {
+      return res.status(200).json({ error: "Medical record not found" });
+    }
+    
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
 exports.getPatients = async (req, res) => {
   try {
     const patient = await Patient.find();

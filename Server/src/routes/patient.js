@@ -8,6 +8,9 @@ const {
   patientLogin,
   getPatients,
   getMe,
+  addmedicalrecord,
+  getMedicalRecords,
+  getsinglemedicalrecord,
 } = require("../controllers/patient");
 const { patientProtect } = require("../middleware/auth");
 
@@ -17,8 +20,10 @@ console.log("hitttting");
 router.post("/signUp", patientSignUp);
 
 router.get("/", getPatients);
+router.get("/medicalrecords", getMedicalRecords);
+router.get("/:patientid", getsinglemedicalrecord);
 router.get("/me", patientProtect, getMe);
-
+router.post("/addmedicalrecord", addmedicalrecord);
 // Update a patient's information
 router.patch("/update", patientProtect, updatePatient);
 
