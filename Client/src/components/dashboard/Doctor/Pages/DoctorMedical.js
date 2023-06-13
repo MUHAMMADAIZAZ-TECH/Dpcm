@@ -50,7 +50,9 @@ const DoctorMedical = () => {
   const gotoDental = () => {
     navigate('/dashboard/doctordental')
   }
-
+  const gotoxray = () =>{
+		window.open("https://huggingface.co/spaces/Arslan7788/DPCM",'_blank')
+	}
 
   return (
     <div className='bg-no-repeat bg-cover flex' style={{ backgroundImage: `url(${backgroundImg})`, height: '100vh' }}>
@@ -69,6 +71,11 @@ const DoctorMedical = () => {
           <div className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400" onClick={() => gotoDental()}>
             <h4 className="mt-2">Dental Chart</h4>
           </div>
+          <div
+						className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
+						onClick={() => gotoxray()}>
+						<h4 className="mt-2">Dental X-ray (ML model)</h4>
+					</div>
         </div>
       </div>
       <div className='w-3/4 bg-none'>

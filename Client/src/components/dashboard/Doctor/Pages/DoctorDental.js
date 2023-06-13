@@ -5,30 +5,27 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DentalChartImage from "../../../../assets/DentalChart.jpeg";
 const DoctorDental = ({ patientId }) => {
-	const toothpatern = { toothNumber: 1, newTreatment: "" }
+  const toothpatern = { toothNumber: 1, newTreatment: "" };
   const [dentalChart, setDentalChart] = useState([
     { toothNumber: 1, newTreatment: "" },
     // Add more teeth as needed
   ]);
   console.log(dentalChart);
   const handleAddTreatment = (toothNumber, treatment) => {
-	console.log(toothNumber, treatment)
+    console.log(toothNumber, treatment);
     setDentalChart(updatedChart);
   };
-  const addnew = () =>{
-	if(dentalChart.length<32){
-		const array = [...dentalChart]
-		array.push({...toothpatern,toothNumber:dentalChart.length+1})
-		setDentalChart(array)
-	}
-	else{
-		alert("Cannot add more")
-	}
-  }
+  const addnew = () => {
+    if (dentalChart.length < 32) {
+      const array = [...dentalChart];
+      array.push({ ...toothpatern, toothNumber: dentalChart.length + 1 });
+      setDentalChart(array);
+    } else {
+      alert("Cannot add more");
+    }
+  };
   const handleSaveChart = () => {
-	console.log(dentalChart)
-  
-	
+    console.log(dentalChart);
   };
 
   const navigate = useNavigate();
@@ -47,6 +44,10 @@ const DoctorDental = ({ patientId }) => {
 
   const gotoTreatment = () => {
     navigate("/dashboard/doctortreat");
+  };
+
+  const gotoxray = () => {
+    window.open("https://huggingface.co/spaces/Arslan7788/DPCM", "_blank");
   };
   const [selectedAction, setSelectedAction] = useState("New Entry");
   const handleActionChange = (action) => {
@@ -85,9 +86,15 @@ const DoctorDental = ({ patientId }) => {
           <div className="bg-gray-400 flex justify-center text-gray-800  border-b-2 border-gray-500 cursor-pointer">
             <h4 className="mt-2">Dental Chart</h4>
           </div>
+          <div
+            className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
+            onClick={() => gotoxray()}
+          >
+            <h4 className="mt-2">Dental X-ray (ML model)</h4>
+          </div>
         </div>
       </div>
-      <div className="w-3/4 bg-none" style={{overflowY:'scroll'}}>
+      <div className="w-3/4 bg-none" style={{ overflowY: "scroll" }}>
         <div className="bg-white text-black h-12 flex">
           <h2 className="bg-white h-12 text-black font-bold font-serif ml-4 pt-2 underline">
             DOCTOR DASHBOARD
@@ -161,7 +168,8 @@ const DoctorDental = ({ patientId }) => {
                 Dental Chart
               </h2>
               <h2 className="text-2xl font-bold mb-4 text-white ml-8 mt-5">
-                <button onClick={addnew}
+                <button
+                  onClick={addnew}
                   className="px-3 py-1 bg-cyan-800 hover:bg-cyan-900 text-white rounded-md ml-2"
                 >
                   Add
@@ -169,11 +177,10 @@ const DoctorDental = ({ patientId }) => {
               </h2>
             </div>
 
-            <div className="grid gap-2" >
+            <div className="grid gap-2">
               {dentalChart &&
-                dentalChart.map((tooth,key) => (
+                dentalChart.map((tooth, key) => (
                   <div
-				  
                     key={key}
                     className="col-span-1 bg-transparent border-2 border-black backdrop-blur-xl shadow-lg rounded-lg text-white p-2 text-center"
                   >
