@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const PatientMedical = () => {
 	const navigate = useNavigate();
+	const [medicalHistory, setMedicalHistory] = useState([]);
+	const [patientId, setPatientId] = useState('');
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("ownerId");
 		navigate("/login", { replace: true });
 	};
-
+	const inputhandler = (e) =>{
+		setPatientId(e.target.value)
+	}
 	const gotoPatientDashboard = () => {
 		navigate("/dashboard/patients");
 	};
@@ -25,7 +29,27 @@ const PatientMedical = () => {
 	const gotoPatientProfile = () => {
 		navigate("/dashboard/patientprofile");
 	};
-
+	const searchmedicalrecord = (patientId) => {
+		if(patientId!==''){
+			axios
+			.get(`http://localhost:3000/api/patient/${patientId}`)
+			.then((response) => {
+			  console.log(response)
+			  if(response.data){
+				setMedicalHistory([response.data])
+			  }
+			  else{
+				setMedicalHistory([])
+			  }
+			})
+			.catch((error) => {
+			  console.error('Error patients:', error);
+			});
+		}
+		else{
+			alert("please enter patient id")
+		}
+	  };
 	return (
 		<div
 			className="bg-no-repeat bg-cover flex"
@@ -74,6 +98,51 @@ const PatientMedical = () => {
 						Log Out
 					</button>
 				</div>
+				<div className="flex flex-col mb-4" >
+            <label htmlFor="fullname" className="mb-2">
+              Enter	Patient Id
+            </label>
+            <input
+              type="text"
+              name='patientId'
+              className="text-black rounded-lg px-3 py-2 "
+              value={patientId}
+              onChange={inputhandler}
+            />
+			<button className='text-white bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg' style={{
+				width:'100%',
+				marginTop:5
+			}}
+			onClick={()=>searchmedicalrecord(patientId)}>Submit</button>
+          </div>
+				 {medicalHistory &&
+				<div className="bg-white rounded-md shadow-md p-4 col-span-2">
+              <h3 className="text-lg font-semibold mb-2">dentalhistory</h3>
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2">patientId</th>
+                    <th className="px-4 py-2">fullname</th>
+                    <th className="px-4 py-2">dob</th>
+                    <th className="px-4 py-2">contact</th>
+                    <th className="px-4 py-2">medication</th>
+                    <th className="px-4 py-2">dentalhistory</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {medicalHistory?.map((history,key) => (
+                    <tr key={key}>
+                      <td className="px-4 py-2">{history.patientid && history.patientid}</td>
+                      <td className="px-4 py-2">{history.fullname && history.fullname}</td>
+                      <td className="px-4 py-2">{history.dob && history.dob}</td>
+                      <td className="px-4 py-2">{history.contact && history.contact}</td>
+                      <td className="px-4 py-2">{history.medication && history.medication}</td>
+                      <td className="px-4 py-2">{history.dentalhistory && history.dentalhistory}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>}
 			</div>
 		</div>
 	);

@@ -16,10 +16,20 @@ const DoctorMedical = () => {
     medication:'',
     dentalhistory:''
   });
+  const [edit, setedit] = useState({
+    fullname:"",
+    dob:'',
+    contact:'',
+    medication:'',
+    dentalhistory:''
+  });
   const inputhandler = (e) =>{
     setstate({...state,[e.target.name]:e.target.value})
   }
- 
+  const inputhandleredit = (e)=>{
+    setedit({...edit,[e.target.name]:e.target.value})
+
+  }
   const getpatients = () => {
     axios
       .get(`http://localhost:3000/api/patient`)
@@ -47,6 +57,14 @@ const DoctorMedical = () => {
         console.log(response)
         if(response.data){
           setMedicalHistory([response.data])
+          setedit({
+            ...edit,
+            fullname:response.data.fullname,
+            dob:response.data.dob,
+            contact:response.data.contact,
+            medication:response.data.medication,
+            dentalhistory:response.data.dentalhistory
+          })
         }
         else{
           setMedicalHistory([])
@@ -81,7 +99,29 @@ const DoctorMedical = () => {
    
   };
 
-
+  const handleUpdaterecord = ()=>{
+    if(patientId!==''){
+      axios.patch(`http://localhost:3000/api/patient/${patientId}`, { patientid: patientId ,...edit})
+        .then((response) => {
+          alert('Record Updated successfully')
+          setstate({
+            fullname:"",
+            dob:'',
+            contact:'',
+            medication:'',
+            dentalhistory:''
+          })
+          console.log('Record Updated successfully:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error adding record:', error);
+        });
+    }
+    else{
+      alert('Please select patient id')
+    }
+   
+  }
   const navigate = useNavigate();
   const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -145,13 +185,18 @@ useEffect(()=>{
     </div>
 
 
-        <div className='text-white mt-2 ml-80' >
+        <div className='text-white mt-2' >
           <h2 className='ml-60 mb-12' >Medical History</h2>
           <div className='flex' >
-            <div className='flex w-1/2 mb-10' style={{width:'100%'}}>
-              <button onClick={()=>setaction('history')} className='bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg'>View Medical History</button>
-             {action==="history" && <button onClick={()=>setaction('new')} className='bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg' style={{marginLeft:20}}>Create Record</button>}
+            <div className='flex' style={{width:'100%'}}>
+            <button onClick={()=>{
+              setaction('edit')
+            }} className='bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg'>Edit Medical Record</button>
+              <button onClick={()=>setaction('history')} style={{marginLeft:20}} className='bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg'>View Medical History</button>
+             {<button onClick={()=>setaction('new')} className='bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg' style={{marginLeft:20}}>Create Record</button>}
              { action==='new' &&  <button onClick={handleAddRecord} style={{marginLeft:20}} className="bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg">Add Record</button>}
+             { action==='edit' && <button onClick={handleUpdaterecord} style={{marginLeft:20}} className="bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg">Update Record</button>}
+           
             </div>
            
           </div>
@@ -194,7 +239,7 @@ useEffect(()=>{
                   {medicalHistory.length==0 &&<td className="px-4 py-2">Not found</td>}
                   {medicalHistory?.map((history,key) => (
                     <tr key={key}>
-                      <td className="px-4 py-2">{history.patientid &&history.patientid}</td>
+                      <td className="px-4 py-2">{history.patientid && history.patientid}</td>
                       <td className="px-4 py-2">{history.fullname && history.fullname}</td>
                       <td className="px-4 py-2">{history.dob && history.dob}</td>
                       <td className="px-4 py-2">{history.contact && history.contact}</td>
@@ -206,22 +251,7 @@ useEffect(()=>{
               </table>
             </div>
             )}
-        {action ==='new' &&  <div className="text-white flex flex-col w-1/2 ml-80 text-center" >
-          <div className="flex flex-col mb-4">
-            <label htmlFor="patient">Select Patient</label>
-            <select
-              id="patient"
-              className=" text-black rounded-lg px-3 py-2"
-              name='patientid'
-              onChange={(e)=>setPatientId(e.target.value)}
-            >
-              {patients?.map((patient,key) => (
-                <option key={key} value={patient.id}>
-                  {patient.patientId}
-                </option>
-              ))}
-            </select>
-          </div>
+        {action ==='new' && <div className="text-white flex flex-col w-1/2 ml-80 text-center" >
           <div className="flex flex-col mb-4" >
             <label htmlFor="fullname" className="mb-2">
               Enter	Full name
@@ -283,6 +313,71 @@ useEffect(()=>{
               className="text-black rounded-lg px-3 py-2"
               value={state.dentalhistory}
               onChange={inputhandler}
+            />
+          </div>
+        </div>}
+        {action ==='edit' && <div className="text-white flex flex-col w-1/2 ml-80 text-center" >
+          <div className="flex flex-col mb-4" >
+            <label htmlFor="fullname" className="mb-2">
+              Enter	Full name
+            </label>
+            <input
+              type="text"
+              name='fullname'
+              className="text-black rounded-lg px-3 py-2 "
+              value={edit.fullname}
+              onChange={inputhandleredit}
+            />
+          </div>
+          <div className="flex flex-col mb-4" >
+            <label htmlFor="dob" className="mb-2">
+              Enter Dob
+            </label>
+            <input
+              type="text"
+              id="dob"
+              name='dob'
+              className="text-black rounded-lg px-3 py-2 "
+              value={edit.dob}
+              onChange={inputhandleredit}
+            />
+          </div>
+          <div className="flex flex-col mb-4" >
+            <label htmlFor="contact" className="mb-2">
+              Enter Contact
+            </label>
+            <input
+              type="text"
+              id="dob"
+              name='contact'
+              className="text-black rounded-lg px-3 py-2 "
+              value={edit.contact}
+              onChange={inputhandleredit}
+            />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="medication" className="mb-2">
+              Enter Medication
+            </label>
+            <input
+              type="text"
+              id="medication"
+              name='medication'
+              className="text-black rounded-lg px-3 py-2"
+              value={edit.medication}
+              onChange={inputhandleredit}
+            />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="medication" className="mb-2">
+              Enter Dental History
+            </label>
+            <input
+              type="text"
+              name="dentalhistory"
+              className="text-black rounded-lg px-3 py-2"
+              value={edit.dentalhistory}
+              onChange={inputhandleredit}
             />
           </div>
         </div>}

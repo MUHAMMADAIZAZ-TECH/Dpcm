@@ -124,7 +124,41 @@ exports.updatePatient = async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 };
+exports.updatePatientMedicalRecord = async (req, res) => {
+  try {
+    const {
+      patientid,
+      fullname,
+      dob,
+      contact,
+      medication,
+      dentalhistory
+    } = req.body;
 
+    const updatemedical = await MedicalRecords.findOneAndUpdate(
+      { patientid: patientid }, // Find by patientid field
+      {
+        $set: {
+          fullname: fullname,
+          dob: dob,
+          contact: contact,
+          medication: medication,
+          dentalhistory: dentalhistory
+        }
+      },
+      { new: true }
+    );
+
+    if (!updatemedical) {
+      return res.status(404).json({ error: "Record not found" });
+    }
+
+    res.status(200).json(updatemedical);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server Error" });
+  }
+};
 exports.deletePatient = async (req, res) => {
   try {
     const { id } = req.params;

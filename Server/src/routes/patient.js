@@ -11,6 +11,7 @@ const {
   addmedicalrecord,
   getMedicalRecords,
   getsinglemedicalrecord,
+  updatePatientMedicalRecord,
 } = require("../controllers/patient");
 const { patientProtect } = require("../middleware/auth");
 
@@ -22,6 +23,7 @@ router.post("/signUp", patientSignUp);
 router.get("/", getPatients);
 router.get("/medicalrecords", getMedicalRecords);
 router.get("/:patientid", getsinglemedicalrecord);
+router.patch("/:patientid", updatePatientMedicalRecord);
 router.get("/me", patientProtect, getMe);
 router.post("/addmedicalrecord", addmedicalrecord);
 // Update a patient's information
