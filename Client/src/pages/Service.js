@@ -30,7 +30,7 @@ const Service = () => {
         </div>
         <div className='flex flex-col space-y-4 p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:p-8 lg:ml-8'>
           <div className='flex flex-col text-center bg-gray-300 justify-center hover:bg-white cursor-default rounded-lg lg:h-44'>
-            <p>oral hygiene</p>
+            <p>Oral Hygiene</p>
             <p>Oral hygiene is the practice of keeping one's oral cavity clean and free of disease and other problems by regular brushing of the teeth and adopting good hygiene habits. It is important that oral hygiene be carried out on a regular basis to enable prevention of dental disease and bad breath. </p>
           </div>
           <div className='flex flex-col text-center bg-gray-300 justify-center hover:bg-white cursor-default rounded-lg'>
