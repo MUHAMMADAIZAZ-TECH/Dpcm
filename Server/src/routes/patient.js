@@ -12,6 +12,7 @@ const {
   getMedicalRecords,
   getsinglemedicalrecord,
   updatePatientMedicalRecord,
+  adddentalchart
 } = require("../controllers/patient");
 const { patientProtect } = require("../middleware/auth");
 
@@ -22,6 +23,7 @@ router.post("/signUp", patientSignUp);
 
 router.get("/", getPatients);
 router.get("/medicalrecords", getMedicalRecords);
+router.post("/dentalChart", adddentalchart);
 router.get("/:patientid", getsinglemedicalrecord);
 router.patch("/:patientid", updatePatientMedicalRecord);
 router.get("/me", patientProtect, getMe);

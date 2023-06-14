@@ -2,6 +2,7 @@ const Patient = require("../models/patient");
 const MedicalRecords =  require("../models/medicalrecord");
 const jwt = require("jsonwebtoken");
 const shortid = require("shortid");
+const DentalCharts = require("../models/dentalchart");
 
 exports.patientSignUp = async (req, res) => {
   try {
@@ -56,6 +57,21 @@ exports.addmedicalrecord = async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 };
+exports.adddentalchart = async (req, res)=>{
+  try {
+    const { 
+    patientid,
+    dentalChart} = req.body;
+    console.log(req.body)
+    const patient = await DentalCharts.create({
+      patientid,
+      dentalChart
+    });
+    res.status(201).json({record:patient})
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+}
 exports.getMedicalRecords = async (req, res) => {
   try {
     const patient = await MedicalRecords.find();

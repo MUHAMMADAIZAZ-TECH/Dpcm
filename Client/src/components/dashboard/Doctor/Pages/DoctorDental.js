@@ -4,16 +4,47 @@ import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DentalChartImage from "../../../../assets/DentalChart.jpeg";
-const DoctorDental = ({ patientId }) => {
-  const toothpatern = { toothNumber: 1, newTreatment: "" };
+const DoctorDental = ({  }) => {
+  const toothpatern = { toothNumber: 1, newTreatment: "",teethNo:"" };
+  const [patientId, setPatientId] = useState("");
+  const [medicalHistory, setMedicalHistory] = useState([]);
+  const [patients, setpatients] = useState([]);
   const [dentalChart, setDentalChart] = useState([
-    { toothNumber: 1, newTreatment: "" },
+    { toothNumber: 1, newTreatment: "",teethNo:"" },
     // Add more teeth as needed
   ]);
   console.log(dentalChart);
-  const handleAddTreatment = (toothNumber, treatment) => {
-    console.log(toothNumber, treatment);
-    setDentalChart(updatedChart);
+  const getpatients = () => {
+    axios
+      .get(`http://localhost:3000/api/patient`)
+      .then((response) => {
+        setpatients(response.data);
+      })
+      .catch((error) => {
+        console.error("Error patients:", error);
+      });
+  };
+  useEffect(() => {
+    getpatients();
+  }, []);
+  const handleAddRecord = () => {
+    if (patientId !== "") {
+      console.log({ patientid: patientId,dentalChart});
+      axios
+        .post(`http://localhost:3000/api/patient/dentalChart`, {
+          patientid: patientId,
+          dentalChart,
+        })
+        .then((response) => {
+          alert("Record added successfully");
+          console.log("Record added successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error adding record:", error);
+        });
+    } else {
+      alert("Please select patient id");
+    }
   };
   const addnew = () => {
     if (dentalChart.length < 32) {
@@ -178,6 +209,26 @@ const DoctorDental = ({ patientId }) => {
             </div>
 
             <div className="grid gap-2">
+            <div className="flex flex-col mb-4">
+          <label htmlFor="patient">Select Patient</label>
+          <select
+            id="patient"
+            value={patientId}
+            onChange={(e) => 
+             {
+              setPatientId(e.target.value)
+             }}
+            className="text-black rounded-lg px-3 py-2"
+            required
+          >
+            <option value="">Select Patient</option>
+            {patients?.map((patient, key) => (
+              <option key={key} value={patient.patientId}>
+                {patient.patientId}
+              </option>
+            ))}
+          </select>
+        </div>
               {dentalChart &&
                 dentalChart.map((tooth, key) => (
                   <div
@@ -195,7 +246,25 @@ const DoctorDental = ({ patientId }) => {
                     >
                       <input
                         type="text"
-                        placeholder="Add Treatment"
+                        placeholder="Enter Teeth No"
+                        className="border border-gray-300 text-black rounded-md px-2 py-1 w-full"
+                        value={tooth.teethNo}
+                        onChange={(e) => {
+                          const updatedChart = dentalChart.map((t) => {
+                            if (t.toothNumber === tooth.toothNumber) {
+                              return {
+                                ...t,
+                                teethNo: e.target.value,
+                              };
+                            }
+                            return t;
+                          });
+                          setDentalChart(updatedChart);
+                        }}
+                      />
+                       <input
+                        type="text"
+                        placeholder="Enter description"
                         className="border border-gray-300 text-black rounded-md px-2 py-1 w-full"
                         value={tooth.newTreatment}
                         onChange={(e) => {
@@ -217,7 +286,7 @@ const DoctorDental = ({ patientId }) => {
               <div className="mt-6" style={{ width: 200 }}>
                 <button
                   className="px-4 py-2 bg-cyan-900 hover:bg-cyan-950 text-white rounded-md ml-12"
-                  onClick={handleSaveChart}
+                  onClick={handleAddRecord}
                 >
                   Save Chart
                 </button>
