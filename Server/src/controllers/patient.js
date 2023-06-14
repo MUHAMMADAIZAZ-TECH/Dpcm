@@ -35,7 +35,9 @@ exports.patientSignUp = async (req, res) => {
 };
 exports.addmedicalrecord = async (req, res) => {
   try {
-    const { patientid,fullname,
+    const { 
+    patientid,
+    fullname,
     dob,
     contact,
     medication,

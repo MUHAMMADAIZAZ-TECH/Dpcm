@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,8 @@ import axios from "axios";
 const PatientMedical = () => {
 	const navigate = useNavigate();
 	const [medicalHistory, setMedicalHistory] = useState([]);
-	const [patientId, setPatientId] = useState('');
+	const [user, setuser] = useState(JSON.parse(localStorage.getItem('patient')));
+	console.log(user)
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("ownerId");
@@ -29,10 +30,10 @@ const PatientMedical = () => {
 	const gotoPatientProfile = () => {
 		navigate("/dashboard/patientprofile");
 	};
-	const searchmedicalrecord = (patientId) => {
-		if(patientId!==''){
+	const getsinglemedicalrecord = () => {
+		if(user!==''){
 			axios
-			.get(`http://localhost:3000/api/patient/${patientId}`)
+			.get(`http://localhost:3000/api/patient/${user.user.patientId}`)
 			.then((response) => {
 			  console.log(response)
 			  if(response.data){
@@ -50,6 +51,9 @@ const PatientMedical = () => {
 			alert("please enter patient id")
 		}
 	  };
+	  useEffect(()=>{
+		getsinglemedicalrecord()
+	  },[])
 	return (
 		<div
 			className="bg-no-repeat bg-cover flex"
@@ -98,26 +102,9 @@ const PatientMedical = () => {
 						Log Out
 					</button>
 				</div>
-				<div className="flex flex-col mb-4" >
-            <label htmlFor="fullname" className="mb-2">
-              Enter	Patient Id
-            </label>
-            <input
-              type="text"
-              name='patientId'
-              className="text-black rounded-lg px-3 py-2 "
-              value={patientId}
-              onChange={inputhandler}
-            />
-			<button className='text-white bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg' style={{
-				width:'100%',
-				marginTop:5
-			}}
-			onClick={()=>searchmedicalrecord(patientId)}>Submit</button>
-          </div>
 				 {medicalHistory &&
 				<div className="bg-white rounded-md shadow-md p-4 col-span-2">
-              <h3 className="text-lg font-semibold mb-2">dentalhistory</h3>
+              <h3 className="text-lg font-semibold mb-2">Medical History</h3>
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr>

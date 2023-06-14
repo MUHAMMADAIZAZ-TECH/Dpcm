@@ -53,10 +53,11 @@ const Login = () => {
 			);
 			// Handle successful login
 			console.log(response.data);
-			const { message, token } = response.data;
+			const { message, token ,data} = response.data;
 			setMessage(message);
 			// Save the token in local storage or a cookie for authentication
 			localStorage.setItem("token", token);
+			localStorage.setItem('patient',JSON.stringify(data))
 			// Reset form fields and state
 			setEmail("");
 			setPassword("");
