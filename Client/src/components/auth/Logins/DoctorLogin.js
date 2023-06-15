@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import Modal from "react-modal";
 import DoctorResetPasswordModal from '../ResetPasswordModals/DoctorResetPasswordModal';
-
+import { Config } from '../../../config';
 const DoctorLogin = () => {
 
     const [rememberMe, setRememberMe] = useState(false);
@@ -38,7 +38,7 @@ const DoctorLogin = () => {
         }
       
         try {
-          const response = await axios.post('http://localhost:3000/api/doctor/login', { email, password });
+          const response = await axios.post(`${Config}api/doctor/login`, { email, password });
           // Handle successful login
           const token = response.data.token;
           // Store the token or perform any other actions required for successful login

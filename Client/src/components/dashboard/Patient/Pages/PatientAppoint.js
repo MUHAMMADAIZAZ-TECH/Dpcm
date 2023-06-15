@@ -3,7 +3,7 @@ import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const PatientAppoint = () => {
   const [formData, setFormData] = useState({
     date: "",
@@ -16,7 +16,7 @@ const PatientAppoint = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/appointment",formData, {
+      const response = await axios.post(`${Config}api/appointment`,formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -56,7 +56,7 @@ const PatientAppoint = () => {
   const getClinics = async () => {
     try {
       const repsonse = await axios.get(
-        "http://localhost:3000/api/admin/clinicList"
+        `${Config}api/admin/clinicList`
       );
       setclinicList(repsonse.data);
       console.log(repsonse);

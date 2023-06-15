@@ -3,6 +3,7 @@ import Navbar from "../../common/Navbar";
 import backgroundImg from "../../../assets/background1.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Config } from "../../../config";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -21,7 +22,7 @@ const Register = () => {
         return;
       }
       console.log(firstName + ' ' +lastName)
-      const response = await axios.post("http://localhost:3000/api/patient/signup", {
+      const response = await axios.post(`${Config}api/patient/signup`, {
         name:firstName + ' ' +lastName,
         email,
         password,

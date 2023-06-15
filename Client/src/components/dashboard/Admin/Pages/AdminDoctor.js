@@ -4,7 +4,7 @@ import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBinLine, RiEditFill, RiDeleteBack2Fill } from "react-icons/ri";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const AdminDoctor = () => {
 	const [selectedAction, setSelectedAction] = useState("");
 	const [doctorName, setDoctorName] = useState("");
@@ -37,7 +37,7 @@ const AdminDoctor = () => {
 
 	const handleAddDoctor = async () => {
 		try {
-			const response = await axios.post("http://localhost:3000/api/doctor", {
+			const response = await axios.post(`${Config}api/doctor`, {
 				name: doctorName,
 				age: doctorAge,
 				email: doctorEmail,
@@ -145,7 +145,7 @@ const AdminDoctor = () => {
 
 	const fetchDoctor = async () => {
 		try {
-			const response = await axios.get("http://localhost:3000/api/doctor/get");
+			const response = await axios.get(`${Config}api/doctor/get`);
 			setDoctor(response.data);
 		} catch (error) {
 			console.error(error);
@@ -158,7 +158,7 @@ const AdminDoctor = () => {
 
 	const handleRemoveDoctor = async (doctorId) => {
 		try {
-			await axios.delete(`http://localhost:3000/api/doctor/${doctorId}`);
+			await axios.delete(`${Config}api/doctor/${doctorId}`);
 			setDoctor(doctor.filter((doctor) => doctor._id !== doctorId));
 		} catch (error) {
 			console.error(error);
@@ -181,7 +181,7 @@ const AdminDoctor = () => {
 			};
 
 			const response = await axios.put(
-				`http://localhost:3000/api/doctor/${doctorId}`,
+				`${Config}api/doctor/${doctorId}`,
 				updatedDoctor,
 			);
 

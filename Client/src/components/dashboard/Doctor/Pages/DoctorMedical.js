@@ -3,7 +3,7 @@ import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const DoctorMedical = () => {
   const [action, setaction] = useState("history");
   const [patientId, setPatientId] = useState("");
@@ -31,7 +31,7 @@ const DoctorMedical = () => {
   };
   const getpatients = () => {
     axios
-      .get(`http://localhost:3000/api/patient`)
+      .get(`${Config}api/patient`)
       .then((response) => {
         setpatients(response.data);
       })
@@ -41,7 +41,7 @@ const DoctorMedical = () => {
   };
   const getMedicalRecords = () => {
     axios
-      .get(`http://localhost:3000/api/patient/medicalrecords`)
+      .get(`${Config}api/patient/medicalrecords`)
       .then((response) => {
         setMedicalHistory(response.data);
       })
@@ -51,7 +51,7 @@ const DoctorMedical = () => {
   };
   const searchmedicalrecord = (patientId) => {
     axios
-      .get(`http://localhost:3000/api/patient/${patientId}`)
+      .get(`${Config}api/patient/${patientId}`)
       .then((response) => {
         console.log(response);
         if (response.data) {
@@ -76,7 +76,7 @@ const DoctorMedical = () => {
     if (patientId !== "") {
       console.log({ patientid: patientId, ...state });
       axios
-        .post(`http://localhost:3000/api/patient/addmedicalrecord`, {
+        .post(`${Config}api/patient/addmedicalrecord`, {
           patientid: patientId,
           ...state,
         })
@@ -102,7 +102,7 @@ const DoctorMedical = () => {
   const handleUpdaterecord = () => {
     if (patientId !== "") {
       axios
-        .patch(`http://localhost:3000/api/patient/${patientId}`, {
+        .patch(`${Config}api/patient/${patientId}`, {
           patientid: patientId,
           ...edit,
         })

@@ -4,7 +4,7 @@ import Logo from "../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import Avatar from "react-avatar";
 import axios from "axios";
-
+import { Config } from "../../../config";
 const Admin = () => {
 	const [selectedAction, setSelectedAction] = useState("");
 	const [patientName, setPatientName] = useState("");
@@ -36,7 +36,7 @@ const Admin = () => {
 	const handleUpdateAdmin = async () => {
 		try {
 			const response = await axios.put(
-				"http://localhost:3000/api/admin",
+				`${Config}api/admin`,
 				adminDetails,
 			);
 			console.log(response.data);
@@ -50,7 +50,7 @@ const Admin = () => {
 
 	const handleAddMedicalHistory = async () => {
 		try {
-			const response = await axios.post("http://localhost:3000/api/", {
+			const response = await axios.post(`${Config}api/`, {
 				name: patientName,
 				medicalcondition: medicalCondition,
 				prescription: prescriptions,
@@ -71,7 +71,7 @@ const Admin = () => {
 	const handleRemoveMedicalHistory = async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:3000/api/${patientId}`,
+				`${Config}api/${patientId}`,
 			);
 			console.log(response.data);
 			setMessage("medical history removed");

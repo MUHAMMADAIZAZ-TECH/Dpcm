@@ -11,7 +11,7 @@ const PatientResetPasswordModal = ({setShowModal, showModal}) => {
 
   const handleEmail = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/patient/token", {
+      const response = await axios.post(`${Config}api/patient/token`, {
         email: email,
       });
 
@@ -29,7 +29,7 @@ const PatientResetPasswordModal = ({setShowModal, showModal}) => {
 
   const handleResetPassword = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/patient/reset", {
+      const response = await axios.post(`${Config}api/patient/reset`, {
         token: verificationCode,
         newPassword: newPassword,
       });

@@ -3,7 +3,7 @@ import backgroundImg from "../../../assets/background1.png";
 import Logo from "../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../config";
 const Owner = () => {
 	const [showProfile, setShowProfile] = useState(null);
 	const [isEditing, setIsEditing] = useState(false);
@@ -37,7 +37,7 @@ const Owner = () => {
 
       // Make the API call to fetch the owner details using the retrieved ownerId
       const response = await axios.get(
-        `http://localhost:3000/api/auth/${ownerId}`
+        `${Config}api/auth/${ownerId}`
       );
       const ownerData = response.data;
 
@@ -73,7 +73,7 @@ const Owner = () => {
   
       // Make the API call to update the owner profile using the retrieved ownerId
       await axios.put(
-        `http://localhost:3000/api/auth/${ownerId}`,
+        `${Config}api/auth/${ownerId}`,
         editedProfile
       );
   

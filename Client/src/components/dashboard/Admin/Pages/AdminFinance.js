@@ -3,7 +3,7 @@ import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const AdminFinance = () => {
   const [state, setstate] = useState({
     description: "",
@@ -55,7 +55,7 @@ const AdminFinance = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/finance/addEntry",
+        `${Config}api/finance/addEntry`,
         {
           adminId:user.data.user._id,
           expenseAmount: Number(state.expense),

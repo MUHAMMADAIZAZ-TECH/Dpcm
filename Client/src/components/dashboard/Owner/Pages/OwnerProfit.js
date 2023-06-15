@@ -13,7 +13,7 @@ const OwnerProfit = () => {
   useEffect(() => {
     // Fetch financial data from the backend
     axios
-      .get("http://localhost:3000/api/finance", {
+      .get(`${Config}api/finance`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }

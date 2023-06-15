@@ -4,7 +4,7 @@ import Logo from '../../../../assets/logo3.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import moment from 'moment';
-
+import { Config } from '../../../../config';
 const AdminAppoint = () => {
 
   const [appointments, setAppointments] = useState([]);
@@ -14,7 +14,7 @@ const AdminAppoint = () => {
     fetchAppointments()
   }, []);
   const fetchAppointments = ( )=>{
-    axios.get('http://localhost:3000/api/appointment', {
+    axios.get(`${Config}api/appointment`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
@@ -31,7 +31,7 @@ const AdminAppoint = () => {
   const handleApproveAppointment = (appointmentId) => {
     console.log(appointmentId)
     // Send an API request to approve the appointment
-    axios.patch(`http://localhost:3000/api/appointment/${appointmentId}`,{
+    axios.patch(`${Config}api/appointment/${appointmentId}`,{
       "isApproved": true
       },{
         headers: {
@@ -49,7 +49,7 @@ const AdminAppoint = () => {
 
   const handleDeclineAppointment = (appointmentId) => {
     // Send an API request to decline the appointment
-    axios.patch(`http://localhost:3000/api/appointment/${appointmentId}`,{
+    axios.patch(`${Config}api/appointment/${appointmentId}`,{
       "isApproved": false
       },{
         headers: {

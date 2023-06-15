@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ResetPasswordModal from "../ResetPasswordModals/OwnerResetPasswordModal";
 import Modal from "react-modal";
-
+import { Config } from "../../../config";
 const OwnerLogin = () => {
 	const [rememberMe, setRememberMe] = useState(false);
 	const [username, setusername] = useState("");
@@ -37,7 +37,7 @@ const OwnerLogin = () => {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/api/auth/login",
+				`${Config}api/auth/login`,
 				{ username, password },
 			);
 			// Handle successful login

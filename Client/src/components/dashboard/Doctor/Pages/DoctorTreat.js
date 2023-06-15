@@ -3,7 +3,7 @@ import backgroundImg from '../../../../assets/background1.png'
 import Logo from '../../../../assets/logo3.png'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-
+import { Config } from '../../../../config';
 const DoctorTreat = ({ patientId }) => {
 
   const [diagnosis, setDiagnosis] = useState('');
@@ -16,7 +16,7 @@ const DoctorTreat = ({ patientId }) => {
     // Fetch the list of patients from the server
     const fetchPatients = async () => {
       try {
-        const response = await axios.get('/api/patients');
+        const response = await axios.get(`${Config}api/patients`);
         setPatients(response.data);
       } catch (error) {
         console.error(error);
@@ -39,7 +39,7 @@ const DoctorTreat = ({ patientId }) => {
 
     try {
       // Send a POST request to create a new treatment plan
-      const response = await axios.post('/api/treatment-plans', newTreatmentPlan);
+      const response = await axios.post(`${Config}/api/treatment-plans`, newTreatmentPlan);
       console.log('Created treatment plan:', response.data);
     } catch (error) {
       console.error('Error creating treatment plan:', error);

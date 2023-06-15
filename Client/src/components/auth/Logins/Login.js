@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 import PatientResetPasswordModal from "../ResetPasswordModals/PatientResetPasswordModal";
-
+import { Config } from "../../../config";
 const Login = () => {
 	const [rememberMe, setRememberMe] = useState(false);
 	const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ const Login = () => {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/api/patient/login",
+				`${Config}api/patient/login`,
 				{
 					email,
 					password,

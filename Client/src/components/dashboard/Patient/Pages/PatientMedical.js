@@ -3,6 +3,7 @@ import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Config } from "../../../../config";
 const PatientMedical = () => {
 	const navigate = useNavigate();
 	const [medicalHistory, setMedicalHistory] = useState([]);
@@ -33,7 +34,7 @@ const PatientMedical = () => {
 	const getsinglemedicalrecord = () => {
 		if(user!==''){
 			axios
-			.get(`http://localhost:3000/api/patient/${user.user.patientId}`)
+			.get(`${Config}api/patient/${user.user.patientId}`)
 			.then((response) => {
 			  console.log(response)
 			  if(response.data){

@@ -3,7 +3,7 @@ import Navbar from "../../common/Navbar";
 import backgroundImg from "../../../assets/background1.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../config";
 const OwnerRegister = () => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [userName, setUserName] = useState("");
@@ -48,7 +48,7 @@ const OwnerRegister = () => {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/api/auth/signup",
+				`${Config}api/auth/signup`,
 				{
 					email: email,
 					password: password,

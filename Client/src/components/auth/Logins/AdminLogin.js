@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AdminResetPasswordModal from "../ResetPasswordModals/AdminResetPasswordModal";
 import Modal from "react-modal";
-
+import { Config } from "../../../config";
 const AdminLogin = () => {
 	const [rememberMe, setRememberMe] = useState(false);
 	const [email, setEmail] = useState("");
@@ -38,7 +38,7 @@ const AdminLogin = () => {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/api/admin/loginadmin",
+				`${Config}api/admin/loginadmin`,
 				{ email, password },
 			);
 			// Handle successful login

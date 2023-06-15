@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import backgroundImg from "../../../assets/background1.png";
-
+import { Config } from "../../../config";
 const AdminResetPasswordModal = ({setShowModal, showModal}) => {
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
   const [email, setEmail] = useState("");
@@ -11,7 +11,7 @@ const AdminResetPasswordModal = ({setShowModal, showModal}) => {
 
   const handleEmail = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/admin/token", {
+      const response = await axios.post(`${Config}api/admin/token`, {
         email: email,
       });
 
@@ -29,7 +29,7 @@ const AdminResetPasswordModal = ({setShowModal, showModal}) => {
 
   const handleResetPassword = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/admin/reset", {
+      const response = await axios.post(`${Config}api/admin/reset`, {
         token: verificationCode,
         newPassword: newPassword,
       });

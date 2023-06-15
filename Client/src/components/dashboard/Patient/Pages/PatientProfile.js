@@ -3,7 +3,7 @@ import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const PatientProfile = () => {
 	const [profileData, setProfileData] = useState(null);
 	const [isEditing, setIsEditing] = useState(false);
@@ -19,7 +19,7 @@ const PatientProfile = () => {
 
 	const fetchProfileData = async () => {
 		try {
-			const response = await axios.get("http://localhost:3000/api/patient/me",{
+			const response = await axios.get(`${Config}api/patient/me`,{
 				headers: {
 				  Authorization: `Bearer ${localStorage.getItem('token')}`
 				}
@@ -44,7 +44,7 @@ const PatientProfile = () => {
 	const handleSaveProfile = async () => {
 		console.log(editedProfileData)
 		try {
-			const response = await axios.patch("http://localhost:3000/api/patient/update", editedProfileData,{
+			const response = await axios.patch(`${Config}api/patient/update`, editedProfileData,{
 				headers: {
 				  Authorization: `Bearer ${localStorage.getItem('token')}`
 				}

@@ -4,6 +4,7 @@ import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DentalChartImage from "../../../../assets/DentalChart.jpeg";
+import { Config } from "../../../../config";
 const DoctorDental = ({  }) => {
   const toothpatern = { toothNumber: 1, newTreatment: "",teethNo:"" };
   const [patientId, setPatientId] = useState("");
@@ -16,7 +17,7 @@ const DoctorDental = ({  }) => {
   console.log(dentalChart);
   const getpatients = () => {
     axios
-      .get(`http://localhost:3000/api/patient`)
+      .get(`${Config}api/patient`)
       .then((response) => {
         setpatients(response.data);
       })
@@ -31,7 +32,7 @@ const DoctorDental = ({  }) => {
     if (patientId !== "") {
       console.log({ patientid: patientId,dentalChart});
       axios
-        .post(`http://localhost:3000/api/patient/dentalChart`, {
+        .post(`${Config}api/patient/dentalChart`, {
           patientid: patientId,
           dentalChart,
         })

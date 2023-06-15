@@ -4,7 +4,7 @@ import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBinLine, RiEditFill, RiDeleteBack2Fill } from "react-icons/ri";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const AdminPatient = () => {
 	const [selectedAction, setSelectedAction] = useState("");
 	const [patientName, setPatientName] = useState("");
@@ -37,7 +37,7 @@ const AdminPatient = () => {
 	const handleAddpatient = async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/api/patient/add",
+				`${Config}api/patient/add`,
 				{
 					name: patientName,
 					age: patientAge,
@@ -70,7 +70,7 @@ const AdminPatient = () => {
 	const handleRemovepatient = async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:3000/api/patient/${patientId}`,
+				`${Config}api/patient/${patientId}`,
 			);
 			console.log(response.data);
 			setMessage("patient removed");
@@ -150,7 +150,7 @@ const AdminPatient = () => {
 
 	const fetchPatients = async () => {
 		try {
-			const response = await axios.get("http://localhost:3000/api/patient");
+			const response = await axios.get(`${Config}api/patient`);
 			setPatients(response.data);
 		} catch (error) {
 			console.error(error);
@@ -163,7 +163,7 @@ const AdminPatient = () => {
 
 	const handleRemovePatient = async (patientId) => {
 		try {
-			await axios.delete(`http://localhost:3000/api/patient/${patientId}`);
+			await axios.delete(`${Config}api/patient/${patientId}`);
 			// Remove the patient from the patients state
 			setPatients(patients.filter((patient) => patient._id !== patientId));
 		} catch (error) {
@@ -185,7 +185,7 @@ const AdminPatient = () => {
 			};
 
 			const response = await axios.put(
-				`http://localhost:3000/api/patient/update/${patientId}`,
+				`${Config}api/patient/update/${patientId}`,
 				updatedPatient,
 			);
 

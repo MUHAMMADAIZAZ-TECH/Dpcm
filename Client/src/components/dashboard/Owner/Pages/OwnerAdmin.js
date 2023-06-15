@@ -3,7 +3,7 @@ import backgroundImg from "../../../../assets/background1.png";
 import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Config } from "../../../../config";
 const OwnerAdmin = ({ admins }) => {
 	const [selectedAction, setSelectedAction] = useState("");
 	const [adminName, setAdminName] = useState("");
@@ -37,7 +37,7 @@ const OwnerAdmin = ({ admins }) => {
 	const handleAddAdmin = async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/api/admin/addadmin",
+				`${Config}api/admin/addadmin`,
 				{
 					name: adminName,
 					age: adminAge,
@@ -115,7 +115,7 @@ const OwnerAdmin = ({ admins }) => {
 
 	const fetchAdmin = async () => {
 		try {
-			const response = await axios.get("http://localhost:3000/api/admin/get");
+			const response = await axios.get(`${Config}api/admin/get`);
 
 			setAdmin(response.data.admins);
 		} catch (error) {
@@ -162,7 +162,7 @@ const OwnerAdmin = ({ admins }) => {
 			};
 
 			const response = await axios.put(
-				`http://localhost:3000/api/admin/updateadmin/${adminId}`,
+				`${Config}api/admin/updateadmin/${adminId}`,
 				updatedAdmin,
 			);
 
@@ -179,7 +179,7 @@ const OwnerAdmin = ({ admins }) => {
 	const handleRemoveAdmin = async (adminId) => {
 		try {
 			await axios.delete(
-				`http://localhost:3000/api/admin/removeadmin/${adminId}`,
+				`${Config}api/admin/removeadmin/${adminId}`,
 			);
 			console.log(adminId);
 			setAdmin(admin.filter((admin) => admin._id !== adminId));
