@@ -19,7 +19,7 @@ const PatientProfile = () => {
 
 	const fetchProfileData = async () => {
 		try {
-			const response = await axios.get(`${Config}api/patient/me`,{
+			const response = await axios.get(`${Config}api/patient/myprofile`,{
 				headers: {
 				  Authorization: `Bearer ${localStorage.getItem('token')}`
 				}
@@ -78,10 +78,6 @@ const PatientProfile = () => {
 		navigate("/dashboard/patientmedical");
 	};
 
-	const gotoDentalXray = () => {
-		navigate("/dashboard/dentalxray");
-	};
-
 	const gotoPatientAppoint = () => {
 		navigate("/dashboard/patientappoint");
 	};
@@ -104,11 +100,6 @@ const PatientProfile = () => {
 					</div>
 					<div className="bg-gray-400 text-gray-800 border-b-2 border-gray-500 border-t-2">
 						<h4 className="mt-2">Profile</h4>
-					</div>
-					<div
-						className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
-						onClick={() => gotoDentalXray()}>
-						<h4 className="mt-2 mr-2">Dental X-RAY</h4>
 					</div>
 					<div
 						className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"

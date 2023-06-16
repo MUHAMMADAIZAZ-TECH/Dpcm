@@ -22,6 +22,7 @@ const PatientAppoint = () => {
         }
       }); // Replace '/api/appointments' with your actual API endpoint
       console.log(response)
+      alert("Appointement successfully created")
       // Handle the response or any additional logic here
     } catch (error) {
       // Handle error
@@ -44,10 +45,6 @@ const PatientAppoint = () => {
   };
   const gotoPatientMedical = () => {
     navigate("/dashboard/patientmedical");
-  };
-
-  const gotoDentalXray = () => {
-    navigate("/dashboard/dentalxray");
   };
 
   const gotoPatientProfile = () => {
@@ -90,12 +87,6 @@ const PatientAppoint = () => {
             onClick={() => gotoPatientProfile()}
           >
             <h4 className="mt-2">Profile</h4>
-          </div>
-          <div
-            className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
-            onClick={() => gotoDentalXray()}
-          >
-            <h4 className="mt-2 mr-2">Dental X-RAY</h4>
           </div>
           <div className="bg-gray-400 text-gray-800 border-b-2 border-gray-500 border-t-2">
             <h4 className="mt-2">Appointment</h4>

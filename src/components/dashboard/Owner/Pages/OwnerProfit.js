@@ -4,6 +4,7 @@ import Logo from "../../../../assets/logo3.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from 'moment';
+import { Config } from "../../../../config";
 const OwnerProfit = () => {
   const [transactions, setTransactions] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);

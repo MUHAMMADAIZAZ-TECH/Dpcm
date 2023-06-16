@@ -102,7 +102,7 @@ const DoctorMedical = () => {
   const handleUpdaterecord = () => {
     if (patientId !== "") {
       axios
-        .patch(`${Config}api/patient/${patientId}`, {
+        .patch(`${Config}api/patient/update/medicalrecord`, {
           patientid: patientId,
           ...edit,
         })

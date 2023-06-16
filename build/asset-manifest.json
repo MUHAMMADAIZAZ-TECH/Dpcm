@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.6d532c7f.css",
-    "main.js": "/static/js/main.dbb36b4c.js",
+    "main.js": "/static/js/main.426b52b3.js",
     "static/media/background1.png": "/static/media/background1.b33161d5857a4343b7ae.png",
     "static/media/DentalChart.jpeg": "/static/media/DentalChart.470195e303e83ab3d0f2.jpeg",
     "static/media/logo3.png": "/static/media/logo3.e2e0748f491654d8560b.png",
     "index.html": "/index.html",
     "main.6d532c7f.css.map": "/static/css/main.6d532c7f.css.map",
-    "main.dbb36b4c.js.map": "/static/js/main.dbb36b4c.js.map"
+    "main.426b52b3.js.map": "/static/js/main.426b52b3.js.map"
   },
   "entrypoints": [
     "static/css/main.6d532c7f.css",
-    "static/js/main.dbb36b4c.js"
+    "static/js/main.426b52b3.js"
   ]
 }

@@ -18,10 +18,6 @@ const Patients = () => {
 		navigate("/dashboard/patientmedical");
 	};
 
-	const gotoDentalXray = () => {
-		navigate("/dashboard/dentalxray");
-	};
-
 	const gotoPatientAppoint = () => {
 		navigate("/dashboard/patientappoint");
 	};
@@ -44,11 +40,6 @@ const Patients = () => {
 						className="bg-gray-700 flex justify-center border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
 						onClick={() => gotoPatientProfile()}>
 						<h4 className="mt-2">Profile</h4>
-					</div>
-					<div
-						className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
-						onClick={() => gotoDentalXray()}>
-						<h4 className="mt-2 mr-2">Dental X-RAY</h4>
 					</div>
 					<div
 						className="bg-gray-700 flex justify-center  border-b-2 border-gray-500 cursor-pointer hover:text-gray-800 hover:bg-gray-400"
