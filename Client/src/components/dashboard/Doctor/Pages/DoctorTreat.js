@@ -39,7 +39,7 @@ const DoctorTreat = ({ patientId }) => {
 
     try {
       // Send a POST request to create a new treatment plan
-      const response = await axios.post(`${Config}/api/treatment-plans`, newTreatmentPlan);
+      const response = await axios.post(`${Config}api/treatment-plans`, newTreatmentPlan);
       console.log('Created treatment plan:', response.data);
     } catch (error) {
       console.error('Error creating treatment plan:', error);

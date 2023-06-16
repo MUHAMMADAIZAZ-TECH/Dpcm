@@ -1,1 +1,1 @@
-export const Config = "http://localhost:3000/";
+export const Config = "https://walrus-app-ixis4.ondigitalocean.app/";
