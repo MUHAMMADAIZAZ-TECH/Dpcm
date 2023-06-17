@@ -32,7 +32,19 @@ const PatientAppoint = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  function handleChangeDate(event) {
+    const selectedDate = new Date(event.target.value);
+    const currentDate = new Date();
+  
+    if (selectedDate < currentDate) {
+      // The selected date is in the past, you can show an error message or take appropriate action.
+      alert("Please select a future date");
+      return;
+    }
+  
+    // Update the form data with the selected date
+    setFormData({ ...formData, date: event.target.value });
+  }
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -132,7 +144,7 @@ const PatientAppoint = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter date"
               value={formData.date}
-              onChange={handleChange}
+              onChange={handleChangeDate}
             />
           </div>
           <div className="mb-4">
@@ -159,14 +171,14 @@ const PatientAppoint = () => {
               className="block text-white text-sm font-bold mb-2"
               htmlFor="time"
             >
-              Time
+              Phone No
             </label>
             <input
               type="text"
               name="time"
               id="time"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter time"
+              placeholder="Enter Phone No"
               value={formData.time}
               onChange={handleChange}
             />
