@@ -34,8 +34,9 @@ const AdminDoctor = () => {
 	const handleGoBackView = () => {
 		setSelectedAction("view");
 	};
-
+	const user = JSON.parse(localStorage.getItem('user'))
 	const handleAddDoctor = async () => {
+		
 		try {
 			const response = await axios.post(`${Config}api/doctor`, {
 				name: doctorName,
@@ -48,6 +49,7 @@ const AdminDoctor = () => {
 				experience: doctorExperience,
 				qualification: doctorQualification,
 				salary: doctorSalary,
+				admin:user.data.user._id
 			});
 			const { token } = response.data;
 			localStorage.setItem("token", token);
