@@ -157,7 +157,7 @@ const AdminAppoint = () => {
             <div key={appointment.id} className="bg-white rounded-md shadow-md p-4 mb-4" >
               <h3 className="text-lg font-semibold mb-2">{appointment.patientName}</h3>
               <p className="text-gray-700">Date: {moment(appointment.date).format('YYYY-MM-DD HH:mm:ss')}</p>
-              <p className="text-gray-700">Time: {appointment.time}</p>
+              <p className="text-gray-700">Phone No: {appointment.time}</p>
               <p className="text-gray-700">Status: {appointment.isApproved?"Approved":"Pending"}</p>
               <p className="text-gray-700">Reason: {appointment.reason}</p>
 
