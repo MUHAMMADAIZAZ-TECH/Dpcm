@@ -5,31 +5,41 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { Config } from '../../../../config';
 const DoctorTreat = () => {
-
+  const doctor = JSON.parse(localStorage.getItem('doctor')).doctor
   const [diagnosis, setDiagnosis] = useState('');
+  const [action, setaction] = useState("view");
   const [medication, setMedication] = useState('');
   const [instructions, setInstructions] = useState('');
   const [selectedPatient, setSelectedPatient] = useState('');
   const [patients, setPatients] = useState([]);
-
+  const [treatmentPlans, settreatmentPlans] = useState([]);
+  console.log(treatmentPlans)
+  const fetchtreatmentplans = async (patientid) => {
+    try {
+      const response = await axios.get(`${Config}api/treatmentPlan/patient/${patientid}`);
+      console.log(response.data)
+      settreatmentPlans(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchPatients = async () => {
+    try {
+      const response = await axios.get(`${Config}api/patient`);
+      setPatients(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     // Fetch the list of patients from the server
-    const fetchPatients = async () => {
-      try {
-        const response = await axios.get(`${Config}api/patient`);
-        console.log(response)
-        setPatients(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
+    fetchtreatmentplans()
     fetchPatients();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const doctor = JSON.parse(localStorage.getItem('doctor')).doctor
     // Create the treatment plan object
     const newTreatmentPlan = {
       patientId:selectedPatient,
@@ -38,12 +48,8 @@ const DoctorTreat = () => {
       medication,
       instructions
     };
-    console.log(newTreatmentPlan);
-
     try {
-      // Send a POST request to create a new treatment plan
       const response = await axios.post(`${Config}api/treatmentPlan`, newTreatmentPlan);
-      console.log('Created treatment plan:', response.data);
       alert('Treatment Plan Added')
     } catch (error) {
       console.error('Error creating treatment plan:', error);
@@ -108,9 +114,84 @@ const DoctorTreat = () => {
       </button>
       <h5></h5>
     </div>
-
-    {console.log(patients)}
-        <form className="text-white flex flex-col w-1/2 ml-80 text-center mt-24" onSubmit={handleSubmit}>
+    <div className="text-white mt-2">
+          <h2 className="ml-60 mb-12">Treatment Plan</h2>
+          <div className="flex">
+            <div className="flex" style={{ width: "100%" }}>
+              <button
+                onClick={() => setaction("view")}
+                style={{ marginLeft: 20 }}
+                className="bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg"
+              >
+                View Treatment Plans
+              </button>
+                <button
+                   onClick={() => setaction("create")}
+                  style={{ marginLeft: 20 }}
+                  className="bg-cyan-800 w-2/4 hover:bg-cyan-900 h-10 rounded-lg"
+                >
+                  Create Treatment Plan
+                </button>
+            </div>
+          </div>
+        </div>
+        {action ==='view' &&         <div className="bg-white rounded-md shadow-md p-4 col-span-2" style={{
+          marginTop:20
+        }}>
+            <h3 className="text-lg font-semibold mb-2">Treatment Plans</h3>
+            <div className="flex flex-col mb-4">
+            <label htmlFor="patient">Select Patient</label>
+            <select
+              id="patient"
+              className=" text-black rounded-lg px-3 py-2"
+              value={selectedPatient}
+              onChange={(e) => {
+                fetchtreatmentplans(e.target.value)
+                setSelectedPatient(e.target.value)
+              }}
+            >
+              {patients.map((patient) => (
+                <option key={patient.id} value={patient._id}>
+                  {patient.name}
+                </option>
+              ))}
+            </select>
+          </div>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Patient ID</th>
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Instructions</th>
+                  <th className="px-4 py-2">Medication</th>
+                  <th className="px-4 py-2">Diagnosis</th>
+                </tr>
+              </thead>
+              <tbody>
+                {treatmentPlans?.data?.map((history, key) => (
+                  <tr key={key}>
+                    <td className="px-4 py-2">
+                      {history.patient.patientId && history.patient.patientId}
+                    </td>
+                    <td className="px-4 py-2">
+                    {history.patient.name && history.patient.name}
+                    </td>
+                    <td className="px-4 py-2">
+                      {history.instructions && history.instructions}
+                    </td>
+                    <td className="px-4 py-2">
+                      {history.medications && history.medications}
+                    </td>
+                    <td className="px-4 py-2">
+                      {history.diagnosis && history.diagnosis}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>}
+       
+        {action ==='create' &&  <form className="text-white flex flex-col w-1/2 ml-80 text-center mt-24" onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">
             <label htmlFor="patient">Select Patient</label>
             <select
@@ -164,7 +245,8 @@ const DoctorTreat = () => {
           <button type="submit" className="bg-cyan-800 hover:bg-cyan-900 text-white rounded-lg px-4 py-2">
             Create Treatment Plan
           </button>
-        </form>
+        </form>}
+       
 
       </div>
     </div>
