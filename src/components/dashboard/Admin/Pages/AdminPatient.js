@@ -174,6 +174,7 @@ const AdminPatient = () => {
 	const handleEditPatient = async (patientId) => {
 		try {
 			const updatedPatient = {
+				PId:patientId,
 				name: patientName,
 				email: patientEmail,
 				password: patientPassword,
@@ -184,8 +185,8 @@ const AdminPatient = () => {
 				city: patientCity,
 			};
 
-			const response = await axios.put(
-				`${Config}api/patient/update/${patientId}`,
+			const response = await axios.patch(
+				`${Config}api/patient/updateByAdmin`,
 				updatedPatient,
 			);
 
@@ -194,7 +195,7 @@ const AdminPatient = () => {
 			handleActionChange("view");
 			fetchPatients();
 		} catch (error) {
-			console.error(error.response.data);
+			// console.error(error.response.data);
 			setEditMessage("Patient Data Edited");
 		}
 	};

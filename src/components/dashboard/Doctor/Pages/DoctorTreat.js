@@ -4,7 +4,7 @@ import Logo from '../../../../assets/logo3.png'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { Config } from '../../../../config';
-const DoctorTreat = ({ patientId }) => {
+const DoctorTreat = () => {
 
   const [diagnosis, setDiagnosis] = useState('');
   const [medication, setMedication] = useState('');
@@ -16,7 +16,8 @@ const DoctorTreat = ({ patientId }) => {
     // Fetch the list of patients from the server
     const fetchPatients = async () => {
       try {
-        const response = await axios.get(`${Config}api/patients`);
+        const response = await axios.get(`${Config}api/patient`);
+        console.log(response)
         setPatients(response.data);
       } catch (error) {
         console.error(error);
@@ -28,19 +29,22 @@ const DoctorTreat = ({ patientId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const doctor = JSON.parse(localStorage.getItem('doctor')).doctor
     // Create the treatment plan object
     const newTreatmentPlan = {
-      patientId,
+      patientId:selectedPatient,
+      doctorId:doctor._id,
       diagnosis,
       medication,
       instructions
     };
+    console.log(newTreatmentPlan);
 
     try {
       // Send a POST request to create a new treatment plan
-      const response = await axios.post(`${Config}api/treatment-plans`, newTreatmentPlan);
+      const response = await axios.post(`${Config}api/treatmentPlan`, newTreatmentPlan);
       console.log('Created treatment plan:', response.data);
+      alert('Treatment Plan Added')
     } catch (error) {
       console.error('Error creating treatment plan:', error);
     }
@@ -105,7 +109,7 @@ const DoctorTreat = ({ patientId }) => {
       <h5></h5>
     </div>
 
-
+    {console.log(patients)}
         <form className="text-white flex flex-col w-1/2 ml-80 text-center mt-24" onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">
             <label htmlFor="patient">Select Patient</label>
@@ -116,7 +120,7 @@ const DoctorTreat = ({ patientId }) => {
               onChange={(e) => setSelectedPatient(e.target.value)}
             >
               {patients.map((patient) => (
-                <option key={patient.id} value={patient.id}>
+                <option key={patient.id} value={patient._id}>
                   {patient.name}
                 </option>
               ))}

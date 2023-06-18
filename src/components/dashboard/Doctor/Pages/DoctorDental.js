@@ -8,13 +8,14 @@ import { Config } from "../../../../config";
 const DoctorDental = ({  }) => {
   const toothpatern = { toothNumber: 1, newTreatment: "",teethNo:"" };
   const [patientId, setPatientId] = useState("");
-  const [medicalHistory, setMedicalHistory] = useState([]);
+  const [dentalchartrecords, setDentalChartrecords] = useState([]);
+  const [filterData, setfilterdata] = useState([]);
   const [patients, setpatients] = useState([]);
   const [dentalChart, setDentalChart] = useState([
     { toothNumber: 1, newTreatment: "",teethNo:"" },
     // Add more teeth as needed
   ]);
-  console.log(dentalChart);
+  console.log(filterData)
   const getpatients = () => {
     axios
       .get(`${Config}api/patient`)
@@ -25,7 +26,18 @@ const DoctorDental = ({  }) => {
         console.error("Error patients:", error);
       });
   };
+  const getdentalcharts = () => {
+    axios
+      .get(`${Config}api/patient/dentalChart`)
+      .then((response) => {
+        setDentalChartrecords(response.data.record);
+      })
+      .catch((error) => {
+        console.error("Error patients:", error);
+      });
+  };
   useEffect(() => {
+    getdentalcharts()
     getpatients();
   }, []);
   const handleAddRecord = () => {
@@ -56,10 +68,6 @@ const DoctorDental = ({  }) => {
       alert("Cannot add more");
     }
   };
-  const handleSaveChart = () => {
-    console.log(dentalChart);
-  };
-
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -85,6 +93,11 @@ const DoctorDental = ({  }) => {
   const handleActionChange = (action) => {
     setSelectedAction(action);
   };
+  const filterarray = (e) =>{
+    setPatientId(e.target.value)
+    const array = dentalchartrecords.filter((item)=>item.patientid === e.target.value)
+    setfilterdata(array[0].dentalChart)
+  }
   return (
     <div
       className="bg-no-repeat bg-cover flex"
@@ -164,6 +177,16 @@ const DoctorDental = ({  }) => {
               >
                 New Entry
               </button>
+              <button
+                className={`py-2 px-4 rounded ml-44 ${
+                  selectedAction === "New Entry"
+                    ? "bg-cyan-800"
+                    : "bg-cyan-800 hover:bg-cyan-900"
+                }`}
+                onClick={() => handleActionChange("view")}
+              >
+                View dental chart
+              </button>
             </div>
           </div>
         </div>
@@ -200,6 +223,7 @@ const DoctorDental = ({  }) => {
                 Dental Chart
               </h2>
               <h2 className="text-2xl font-bold mb-4 text-white ml-8 mt-5">
+               
                 <button
                   onClick={addnew}
                   className="px-3 py-1 bg-cyan-800 hover:bg-cyan-900 text-white rounded-md ml-2"
@@ -209,7 +233,7 @@ const DoctorDental = ({  }) => {
               </h2>
             </div>
 
-            <div className="grid gap-2">
+           <div className="grid gap-2">
             <div className="flex flex-col mb-4">
           <label htmlFor="patient">Select Patient</label>
           <select
@@ -292,7 +316,51 @@ const DoctorDental = ({  }) => {
                   Save Chart
                 </button>
               </div>
-            </div>
+            </div> 
+          </div>
+        )}
+        {selectedAction === "view" && dentalchartrecords?.length > 0 && (
+          <div className="bg-white rounded-md shadow-md p-4 col-span-2">
+                        <div className="flex flex-col mb-4">
+          <label htmlFor="patient">Select Patient</label>
+          <select
+            id="patient"
+            value={patientId}
+            onChange={(e) => filterarray(e)}
+            className="text-black rounded-lg px-3 py-2"
+            required
+          >
+            <option value="">Select Patient</option>
+            {dentalchartrecords?.map((patient, key) => (
+              <option key={key} value={patient.patientid}>
+                {patient.patientid}
+              </option>
+            ))}
+          </select>
+        </div>
+            <h3 className="text-lg font-semibold mb-2">Dental Chart</h3>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">patientId</th>
+                  <th className="px-4 py-2">Teeth No</th>
+                  <th className="px-4 py-2">Treatment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filterData?.map((history, key) => (
+                  <tr key={key}>
+                    <td className="px-4 py-2">
+                      {patientId}
+                    </td>
+                    <td className="px-4 py-2">
+                      {history.teethNo && history.teethNo}
+                    </td>
+                    <td className="px-4 py-2">{history.newTreatment && history.newTreatment}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

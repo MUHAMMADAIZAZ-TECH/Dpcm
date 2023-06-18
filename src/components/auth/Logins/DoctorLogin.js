@@ -42,6 +42,7 @@ const DoctorLogin = () => {
           // Handle successful login
           const token = response.data.token;
           // Store the token or perform any other actions required for successful login
+          localStorage.setItem('doctor',JSON.stringify(response.data))
           localStorage.setItem('token', token);
           navigate('/dashboard/doctors');
         } catch (error) {
